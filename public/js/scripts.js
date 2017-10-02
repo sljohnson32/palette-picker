@@ -4,7 +4,19 @@ function showDropDown() {
 }
 
 function selectProject() {
-    console.log('PROJECT SELECTED')
+    console.log('PROJECT SELECTED!')
+}
+
+function generateNewPalatte() {
+  console.log('NEW PALATE!')
+}
+
+function savePalatte() {
+  console.log('PALATE SAVED!')
+}
+
+function saveProject() {
+  console.log('PROJECT SAVED!')
 }
 
 

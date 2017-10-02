@@ -12,6 +12,7 @@
     <header>
       <h1>Perfect Palette Picker</h1>
     </header>
+    <hr>
     <section class='picker-container'>
       <article class='color-container one'>
         <img src='./imgs/unlocked.png' class='unlocked' />
@@ -39,18 +40,26 @@
       </article>
     </section>
     <section>
-      <button>Generate New Palette!</button>
-      <div class="dropdown">
-        <button onclick="showDropDown()" class="dropbtn">Pick a project</button>
-        <div id="myDropdown" class="dropdown-content">
-          //to be removed when function is created to load these HTML elements after server feeds data
-          <p onclick="selectProject()">Project 1</p>
-          <p onclick="selectProject()">Project 2</p>
-          <p onclick="selectProject()">Project 3</p>
+      <button onclick="generateNewPalatte">Generate New Palette!</button>
+      <section class="save-contorls">
+        <div class="dropdown">
+          <button onclick="showDropDown()" class="dropbtn">Pick a project</button>
+          <div id="myDropdown" class="dropdown-content">
+            <p onclick="selectProject()">Project 1</p>
+            <p onclick="selectProject()">Project 2</p>
+            <p onclick="selectProject()">Project 3</p>
+          </div>
         </div>
-      </div>
+        <input id="input-palatte-name" placeholder="Palatte name..."></input>
+        <button onclick="savePalatte()">Save Palatte</button>
+        <input id="input-project-name" placeholder="New project name..."></input>
+        <button onclick="saveProject()">Save Project</button>
+      </section>
     </section>
-
+    <hr>
+    <section class="saved-palatte-container">
+      Code will be added to JS to add/remove HTML elements to this section based on the above.
+    </section>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript" src='js/scripts.js'></script>
   </body>
