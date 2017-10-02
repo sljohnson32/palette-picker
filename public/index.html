@@ -38,19 +38,31 @@
         <p class='color-code six'>#FFFFFF</p>
       </article>
     </section>
-    <section>
-      <button>Generate New Palette!</button>
-      <div class="dropdown">
-        <button onclick="showDropDown()" class="dropbtn">Pick a project</button>
-        <div id="myDropdown" class="dropdown-content">
-          //to be removed when function is created to load these HTML elements after server feeds data
-          <p onclick="selectProject()">Project 1</p>
-          <p onclick="selectProject()">Project 2</p>
-          <p onclick="selectProject()">Project 3</p>
+    <section class="palette-controls">
+      <button class="btn-gen-new-palette" onclick="generateNewPalette()">Generate New Palette!</button><br>
+
+      <div class="dropdown-container">
+        <div class="dropdown">
+          <button onclick="showDropDown()" class="dropbtn">Project 1 &#9660;</button>
+          <div id="myDropdown" class="dropdown-content">
+            <a class="selected" onclick="selectProject()">Project 1</a>
+            <a onclick="selectProject()">Project 2</a>
+            <a onclick="selectProject()">Project 3</a>
+          </div>
         </div>
       </div>
+      <div class="save-controls">
+        <input id="input-palette-name" placeholder="Palette name..."></input>
+        <button class="save-btn" onclick="savePalette()">Save Palette</button>
+        <br>
+        <input id="input-project-name" placeholder="New project name..."></input>
+        <button class="save-btn" onclick="saveProject()">Save Project</button>
+      </div>
     </section>
+    <hr>
+    <section class="saved-palette-container">
 
+    </section>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript" src='js/scripts.js'></script>
   </body>
