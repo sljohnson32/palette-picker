@@ -47,6 +47,11 @@ button:disabled {
   opacity: .7;
 }
 
+input {
+  border-radius: 5px;
+  height: 20px;
+}
+
 .palette-controls {
   text-align: center;
   padding: 5px;
