@@ -1,8 +1,41 @@
+body {
+  font-family: "Open-Sans", sans-serif;
+}
+
+header {
+  padding: 20px;
+  font-size: 20px;
+  text-align: center;
+}
+
+.picker-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0 20px;
+}
+
+.color-container {
+  flex-basis: auto;
+  width: 140px;
+  height: 80px;
+  margin: 0 10px;
+  padding-top: 160px;
+  outline: gray solid 1px;
+  text-align: center;
+}
+
+
+
+
+
 /* Dropdown Button */
 .dropbtn {
     background-color: #4CAF50;
     color: white;
-    padding: 16px;
+    padding: 6px;
     font-size: 16px;
     border: none;
     cursor: pointer;
