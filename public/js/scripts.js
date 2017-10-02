@@ -7,11 +7,11 @@ function selectProject() {
     console.log('PROJECT SELECTED!')
 }
 
-function generateNewPalatte() {
+function generateNewPalette() {
   console.log('NEW PALATE!')
 }
 
-function savePalatte() {
+function savePalette() {
   console.log('PALATE SAVED!')
 }
 

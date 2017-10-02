@@ -38,9 +38,10 @@
         <p class='color-code six'>#FFFFFF</p>
       </article>
     </section>
-    <section>
-      <button onclick="generateNewPalatte">Generate New Palette!</button>
-      <section class="save-contorls">
+    <section class="palette-controls">
+      <button class="btn-gen-new-palette" onclick="generateNewPalette()">Generate New Palette!</button><br>
+
+      <div class="dropdown-container">
         <div class="dropdown">
           <button onclick="showDropDown()" class="dropbtn">Project 1 &#9660;</button>
           <div id="myDropdown" class="dropdown-content">
@@ -49,14 +50,17 @@
             <a onclick="selectProject()">Project 3</a>
           </div>
         </div>
-        <input id="input-palatte-name" placeholder="Palatte name..."></input>
-        <button onclick="savePalatte()">Save Palatte</button>
+      </div>
+      <div class="save-controls">
+        <input id="input-palette-name" placeholder="Palette name..."></input>
+        <button class="save-btn" onclick="savePalette()">Save Palette</button>
+        <br>
         <input id="input-project-name" placeholder="New project name..."></input>
-        <button onclick="saveProject()">Save Project</button>
-      </section>
+        <button class="save-btn" onclick="saveProject()">Save Project</button>
+      </div>
     </section>
     <hr>
-    <section class="saved-palatte-container">
+    <section class="saved-palette-container">
 
     </section>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
