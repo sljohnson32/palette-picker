@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="css/reset.css">
+    <link rel="stylesheet" type="text/css" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto+Slab:400,800" rel="stylesheet">
+    <title>Perfect Palette Picker</title>
+  </head>
+  <body>
+    <header>
+      <h1>Perfect Palette Picker</h1>
+    </header>
+    <section class='picker-container'>
+      <article class='color-container one'>
+        <img src='./imgs/unlocked.png' class='unlocked' />
+        <p class='color-code one'>#FFFFFF</p>
+      </article>
+      <article class='color-container two'>
+        <img src='./imgs/unlocked.png' class='unlocked' />
+        <p class='color-code two'>#FFFFFF</p>
+      </article>
+      <article class='color-container three'>
+        <img src='./imgs/unlocked.png' class='unlocked' />
+        <p class='color-code three'>#FFFFFF</p>
+      </article>
+      <article class='color-container four'>
+        <img src='./imgs/unlocked.png' class='unlocked' />
+        <p class='color-code four'>#FFFFFF</p>
+      </article>
+      <article class='color-container five'>
+        <img src='./imgs/unlocked.png' class='unlocked' />
+        <p class='color-code five'>#FFFFFF</p>
+      </article>
+      <article class='color-container six'>
+        <img src='./imgs/unlocked.png' class='unlocked' />
+        <p class='color-code six'>#FFFFFF</p>
+      </article>
+    </section>
+    <section>
+      <button>Generate New Palette!</button>
+      <div class="dropdown">
+        <button onclick="showDropDown()" class="dropbtn">Pick a project</button>
+        <div id="myDropdown" class="dropdown-content">
+          //to be removed when function is created to load these HTML elements after server feeds data
+          <p onclick="selectProject()">Project 1</p>
+          <p onclick="selectProject()">Project 2</p>
+          <p onclick="selectProject()">Project 3</p>
+        </div>
+      </div>
+    </section>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src='js/scripts.js'></script>
+  </body>
+</html>
