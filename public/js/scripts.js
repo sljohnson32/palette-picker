@@ -8,7 +8,20 @@ function selectProject() {
 }
 
 function generateNewPalette() {
-  console.log('NEW PALATE!')
+  $('.color-container').each((index, element) => {
+    let colorCode = getRandomColor()
+    console.log(element)
+    $(element).find('p').text(`rgb(${colorCode})`)
+    $(element).css("background-color", `rgb(${colorCode})`)
+  })
+}
+
+function getRandomColor(element) {
+  let a, b, c;
+  a = Math.floor(Math.random()*(256)+0);
+  b = Math.floor(Math.random()*(256)+0);
+  c = Math.floor(Math.random()*(256)+0);
+  return `${a}, ${b}, ${c}`
 }
 
 function savePalette() {
