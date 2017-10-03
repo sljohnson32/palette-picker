@@ -18,12 +18,12 @@ header {
 }
 
 .color-container {
+  border: none;
   flex-basis: auto;
   width: 140px;
   height: 80px;
-  margin: 0 10px;
+  /*margin: 0 1px;*/
   padding-top: 160px;
-  outline: gray solid 1px;
   text-align: center;
 }
 
@@ -45,6 +45,11 @@ button:hover, button:focus {
 button:disabled {
   background-color: #4CAF50;
   opacity: .7;
+}
+
+input {
+  border-radius: 5px;
+  height: 20px;
 }
 
 .palette-controls {
