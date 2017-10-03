@@ -2,6 +2,17 @@ $(document).ready(() => {
   generateNewPalette(true)
 });
 
+$('img').click((e) => {
+  console.log($(e.target).attr('class'))
+  if ($(e.target).attr('class') == 'unlocked') {
+    $(e.target).toggleClass('locked unlocked')
+    $(e.target).attr('src', './imgs/locked.png')
+  } else {
+    $(e.target).toggleClass('locked unlocked')
+    $(e.target).attr('src', './imgs/unlocked.png')
+  }
+  console.log($(e.target).attr('class'))
+})
 
 const showDropDown = () => {
     document.getElementById("myDropdown").classList.toggle("show");
@@ -36,7 +47,6 @@ const savePalette = () => {
 const saveProject = () => {
   console.log('PROJECT SAVED!')
 }
-
 
 
 // Close the dropdown menu if the user clicks outside of it
