@@ -1,26 +1,27 @@
 $(document).ready(() => {
-  generateNewPalette()
+  generateNewPalette(true)
 });
 
 
-function showDropDown() {
+const showDropDown = () => {
     document.getElementById("myDropdown").classList.toggle("show");
 }
 
-function selectProject() {
+const selectProject = () => {
     console.log('PROJECT SELECTED!')
 }
 
-function generateNewPalette() {
+const generateNewPalette = (initial = false) => {
   $('.color-container').each((index, element) => {
-    let colorCode = getRandomColor()
-    console.log(element)
-    $(element).find('p').text(`rgb(${colorCode})`)
-    $(element).css("background-color", `rgb(${colorCode})`)
+    if ($(element).find("img").hasClass('unlocked')) {
+      let colorCode = getRandomColor()
+      $(element).find('p').text(`rgb(${colorCode})`)
+      $(element).css("background-color", `rgb(${colorCode})`)
+    }
   })
 }
 
-function getRandomColor(element) {
+const getRandomColor = () => {
   let a, b, c;
   a = Math.floor(Math.random()*(256)+0);
   b = Math.floor(Math.random()*(256)+0);
@@ -28,24 +29,24 @@ function getRandomColor(element) {
   return `${a}, ${b}, ${c}`
 }
 
-function savePalette() {
+const savePalette = () => {
   console.log('PALATE SAVED!')
 }
 
-function saveProject() {
+const saveProject = () => {
   console.log('PROJECT SAVED!')
 }
 
 
 
 // Close the dropdown menu if the user clicks outside of it
-window.onclick = function(event) {
+window.onclick = (event) => {
   if (!event.target.matches('.dropbtn')) {
 
-    var dropdowns = document.getElementsByClassName("dropdown-content");
-    var i;
+    let dropdowns = document.getElementsByClassName("dropdown-content");
+    let i;
     for (i = 0; i < dropdowns.length; i++) {
-      var openDropdown = dropdowns[i];
+      let openDropdown = dropdowns[i];
       if (openDropdown.classList.contains('show')) {
         openDropdown.classList.remove('show');
       }
