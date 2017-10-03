@@ -1,5 +1,5 @@
 $(document).ready(() => {
-  generateNewPalette(true)
+  generateNewPalette()
 });
 
 $('img').click((e) => {
@@ -20,23 +20,30 @@ const selectProject = () => {
     console.log('PROJECT SELECTED!')
 }
 
-const generateNewPalette = (initial = false) => {
+const generateNewPalette = () => {
   $('.color-container').each((index, element) => {
     if ($(element).find("img").hasClass('unlocked')) {
       let colorCode = getRandomColor()
-      $(element).find('p').text(`rgb(${colorCode})`)
-      $(element).css("background-color", `rgb(${colorCode})`)
+      $(element).find('p').text(colorCode)
+      $(element).css("background-color", colorCode)
     }
   })
 }
 
 const getRandomColor = () => {
-  let a, b, c;
-  a = Math.floor(Math.random()*(256)+0);
-  b = Math.floor(Math.random()*(256)+0);
-  c = Math.floor(Math.random()*(256)+0);
-  return `${a}, ${b}, ${c}`
+  const chars = '0123456789ABCDEF'
+    let colorCode = '#'
+    for (let i = 0; i < 6; i++) {
+        colorCode += chars[Math.floor(Math.random() * 16)]
+    }
+    return colorCode
 }
+//   let a, b, c;
+//   a = Math.floor(Math.random()*(256)+0);
+//   b = Math.floor(Math.random()*(256)+0);
+//   c = Math.floor(Math.random()*(256)+0);
+//   return `${a}, ${b}, ${c}`
+// }
 
 const savePalette = () => {
   console.log('PALATE SAVED!')
