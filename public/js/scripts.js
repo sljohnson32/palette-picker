@@ -1,3 +1,7 @@
+$(document).ready(() => {
+  generateNewPalette()
+});
+
 
 function showDropDown() {
     document.getElementById("myDropdown").classList.toggle("show");
