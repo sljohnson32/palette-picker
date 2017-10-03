@@ -3,7 +3,6 @@ $(document).ready(() => {
 });
 
 $('img').click((e) => {
-  console.log($(e.target).attr('class'))
   if ($(e.target).attr('class') == 'unlocked') {
     $(e.target).toggleClass('locked unlocked')
     $(e.target).attr('src', './imgs/locked.png')
@@ -11,7 +10,6 @@ $('img').click((e) => {
     $(e.target).toggleClass('locked unlocked')
     $(e.target).attr('src', './imgs/unlocked.png')
   }
-  console.log($(e.target).attr('class'))
 })
 
 const showDropDown = () => {
