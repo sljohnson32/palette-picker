@@ -5,11 +5,11 @@ $(document).ready(() => {
 
 const projects = ['Project 1', 'Project 2', 'Project 3', 'Project 4']
 const palettes = [
-  { project: 'Project 1', colors: ['#3F856C', '#065A83', '#94AD42', '#BBB345', '#6303D0', '#604B3B'] },
-  { project: 'Project 1', colors: ['#68608F', '#49C262', '#AB50E5', '#BBB345', '#6303D0', '#604B3B'] },
-  { project: 'Project 2', colors: ['#68608F', '#49C262', '#AB50E5', '#BBB345', '#6303D0', '#604B3B'] },
-  { project: 'Project 3', colors: ['#68608F', '#49C262', '#AB50E5', '#BBB345', '#6303D0', '#604B3B'] },
-  { project: 'Project 4', colors: ['#4A914E', '#E1930C', '#C54E51', '#2DAC4A', '#898117', '#8D2380'] }
+  { project: 'Project 1', name: 'Palette Uno', colors: ['#3F856C', '#065A83', '#94AD42', '#BBB345', '#6303D0', '#604B3B'] },
+  { project: 'Project 1', name: 'Palette Dos', colors: ['#68608F', '#49C262', '#AB50E5', '#BBB345', '#6303D0', '#604B3B'] },
+  { project: 'Project 2', name: 'Palette Uno',colors: ['#68608F', '#49C262', '#AB50E5', '#BBB345', '#6303D0', '#604B3B'] },
+  { project: 'Project 3', name: 'Palette Uno', colors: ['#68608F', '#49C262', '#AB50E5', '#BBB345', '#6303D0', '#604B3B'] },
+  { project: 'Project 4', name: 'Palette Uno', colors: ['#4A914E', '#E1930C', '#C54E51', '#2DAC4A', '#898117', '#8D2380'] }
 ]
 
 $('img').click((e) => {
@@ -65,10 +65,10 @@ const populateProjects = () => {
   projects.forEach(project => {
     let listHTML = `<a onclick="selectDropdownProject()">${project}</a>`;
     let projectHTML = getProjectHTML(project);
+    let palatteHTML = populateProjectPalettes(project)
     $('#myDropdown').append(listHTML);
     $('.saved-palette-container').append(projectHTML)
   })
-  populateProjectPalettes()
 }
 
 const getProjectHTML = (project) => {
@@ -80,8 +80,11 @@ const getProjectHTML = (project) => {
   return html;
 }
 
-const populateProjectPalettes = () => {
-  console.log("Populating Saved Palettes")
+const populateProjectPalettes = (project) => {
+  let paletteHTML = palettes.filter((palette) => {
+    return palette.project == project
+  })
+  console.log(project, paletteHTML)
 }
 
 // Close the dropdown menu if the user clicks outside of it
