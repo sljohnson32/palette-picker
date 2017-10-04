@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/sljohnson32/palette-picker#readme",
   "dependencies": {
+    "body-parser": "^1.18.2",
     "knex": "^0.13.0",
     "pg": "^7.3.0"
   }
