@@ -26,7 +26,7 @@ header {
   flex-basis: auto;
   width: 140px;
   height: 100px;
-  padding-top: 160px;
+  padding-top: 200px;
   text-align: center;
 }
 
@@ -121,7 +121,7 @@ hr {
   border: none;
   flex-basis: auto;
   width: 320px;
-  height: 40px;
+  height: auto;
   margin: 10px 20px;
 }
 
@@ -130,4 +130,20 @@ hr {
   font-weight: bold;
   border-bottom: 1px solid gray;
   padding: 0 0 5px;
+}
+
+.color-box-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 10px;
+}
+
+.color-box {
+  border: none;
+  flex-basis: auto;
+  width: 30px;
+  height: 30px;
 }
