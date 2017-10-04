@@ -22,12 +22,12 @@ $('img').click((e) => {
   }
 })
 
+$('.dropdown-project').on('click', (e) => {
+  console.log($(e.target))
+})
+
 const showDropDown = () => {
     document.getElementById("myDropdown").classList.toggle("show");
-}
-
-const selectDropdownProject = () => {
-    console.log('PROJECT DROPDOWN SELECTED!')
 }
 
 const generateNewPalette = () => {
@@ -63,7 +63,7 @@ const selectProject = () => {
 
 const populateProjects = () => {
   projects.forEach(project => {
-    let listHTML = `<a onclick="selectDropdownProject()">${project}</a>`;
+    let listHTML = `<a class="dropdown-project">${project}</a>`;
     let projectHTML = getProjectHTML(project);
     let paletteHTML = populateProjectPalettes(project)
     $('#myDropdown').append(listHTML);
@@ -112,7 +112,7 @@ const generateSavedPalette = (name, colors) => {
 
 // Close the dropdown menu if the user clicks outside of it
 window.onclick = (event) => {
-  if (!event.target.matches('.dropbtn')) {
+  if (!event.target.matches('.dropbtn') && !event.target.matches('.dropdown-project') ) {
 
     let dropdowns = document.getElementsByClassName("dropdown-content");
     let i;
