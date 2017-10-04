@@ -72,6 +72,41 @@ app.post('/api/v1/palettes', (request, response) => {
     });
 });
 
+app.put('/api/v1/palettes/:id', (request, response) => {
+  const palette = request.body;
+  const paletteID = request.params.id
+  const paletteFields = ['name', 'color_1', 'color_2', 'color_3', 'color_4', 'color_5', 'color_6', 'project_id']
+
+  for (let requiredParameter of paletteFields) {
+    if (!palette[requiredParameter]) {
+      return response
+        .status(422)
+        .send({ error: `Expected format: { name: <String>, color_1: <String>, color_2: <String>, color_3: <String>, color_4: <String>, color_5: <String>, color_6: <String>, project_id: <Integer> }. You're missing a "${requiredParameter}" property.` });
+    }
+  }
+
+  database('palettes').where("id", "=", paletteID).update(palette, 'id')
+    .then(palette => {
+      response.status(201).json({ id: palette[0] })
+    })
+    .catch(error => {
+      response.status(500).json({ error });
+    });
+});
+
+app.delete('/api/v1/palettes/:id', (request, response) => {
+  const paletteID = request.params.id
+
+  database('palettes').where('id', paletteID).del()
+    .then(() => {
+      response.status(200).json(`Palette with ${paletteID} was deleted!`)
+    })
+    .catch(error => {
+      response.status(500).json({ error })
+    })
+
+})
+
 app.listen(3000, () => {
   console.log('Projects server running on localhost:3000')
 })
