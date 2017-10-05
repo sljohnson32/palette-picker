@@ -14,6 +14,7 @@ app.get('/', (request, response) => {
   response.sendfile('index.html');
 })
 
+
 app.get('/api/v1/projects', (request, response) => {
   database('projects').select().orderBy('id')
     .then((projects) => {
@@ -23,6 +24,7 @@ app.get('/api/v1/projects', (request, response) => {
       response.status(500).json(error)
     });
 });
+
 
 app.get('/api/v1/palettes/:id', (request, response) => {
   const paletteID = request.params.id
@@ -35,6 +37,7 @@ app.get('/api/v1/palettes/:id', (request, response) => {
       response.status(500).json(error)
     });
 });
+
 
 app.post('/api/v1/projects', (request, response) => {
   const project = request.body;
@@ -49,9 +52,10 @@ app.post('/api/v1/projects', (request, response) => {
       response.status(201).json({ id: project[0] })
     })
     .catch(error => {
-      response.status(500).json({ error });
+      response.status(500).json(error);
     });
 });
+
 
 app.post('/api/v1/palettes', (request, response) => {
   const palette = request.body;
@@ -70,9 +74,10 @@ app.post('/api/v1/palettes', (request, response) => {
       response.status(201).json({ id: palette[0] })
     })
     .catch(error => {
-      response.status(500).json({ error });
+      response.status(500).json(error);
     });
 });
+
 
 app.put('/api/v1/palettes/:id', (request, response) => {
   const palette = request.body;
@@ -92,9 +97,10 @@ app.put('/api/v1/palettes/:id', (request, response) => {
       response.status(201).json({ id: palette[0] })
     })
     .catch(error => {
-      response.status(500).json({ error });
+      response.status(500).json(error);
     });
 });
+
 
 app.delete('/api/v1/palettes/:id', (request, response) => {
   const paletteID = request.params.id
@@ -104,7 +110,7 @@ app.delete('/api/v1/palettes/:id', (request, response) => {
       response.status(200).json(`Palette with ${paletteID} was deleted!`)
     })
     .catch(error => {
-      response.status(500).json({ error })
+      response.status(500).json(error)
     })
 
 })
