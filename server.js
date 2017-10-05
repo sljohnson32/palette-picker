@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 
 const bodyParser = require('body-parser')
+app.set('port', process.env.PORT || 3000);
 app.use(bodyParser.json())
 
 const environment = process.env.NODE_ENV || 'development';
@@ -109,6 +110,6 @@ app.delete('/api/v1/palettes/:id', (request, response) => {
 
 })
 
-app.listen(3000, () => {
-  console.log('Projects server running on localhost:3000')
-})
+app.listen(app.get('port'), () => {
+  console.log(`${app.get('env')} server is running on localhost:${app.get('port')}.`);
+});

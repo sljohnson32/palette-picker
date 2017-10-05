@@ -22,6 +22,7 @@ const projectsData = [{
 
 const createProject = (knex, project) => {
   return knex('projects').insert({
+    id: project.id,
     name: project.name
   }, 'id')
   .then(projectId => {
@@ -30,6 +31,7 @@ const createProject = (knex, project) => {
     project.palettes.forEach(palette => {
       palettePromises.push(
         createPalette(knex, {
+          id: palette.id,
           name: palette.name,
           color_1: palette.color_1,
           color_2: palette.color_2,
