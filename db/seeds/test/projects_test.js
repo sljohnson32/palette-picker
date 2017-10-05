@@ -1,18 +1,20 @@
 const fakePalettes1 = [
-  { name: 'Palette 1', color_1: '#3F856C', color_2: '#065A83', color_3:'#94AD42', color_4:'#BBB345', color_5:'#6303D0', color_6:'#604B3B' },
-  { name: 'Palette 2', color_1: '#4A914E', color_2: '#E1930C', color_3: '#C54E51', color_4: '#2DAC4A', color_5: '#898117', color_6: '#8D2380' }
+  { id: 1, name: 'Palette 1', color_1: '#3F856C', color_2: '#065A83', color_3:'#94AD42', color_4:'#BBB345', color_5:'#6303D0', color_6:'#604B3B' },
+  { id: 2, name: 'Palette 2', color_1: '#4A914E', color_2: '#E1930C', color_3: '#C54E51', color_4: '#2DAC4A', color_5: '#898117', color_6: '#8D2380' }
 ];
 
 const fakePalettes2 = [
-  { name: 'This other Palette', color_1: '#68608F', color_2: '#49C262', color_3: '#AB50E5', color_4: '#BBB345', color_5: '#6303D0', color_6: '#604B3B'},
-  { name: 'The best palette', color_1: '#3F856C', color_2: '#065A83', color_3:'#94AD42', color_4:'#BBB345', color_5:'#6303D0', color_6:'#604B3B' }
+  { id: 3, name: 'This other Palette', color_1: '#68608F', color_2: '#49C262', color_3: '#AB50E5', color_4: '#BBB345', color_5: '#6303D0', color_6: '#604B3B'},
+  { id: 4, name: 'The best palette ever', color_1: '#3F856C', color_2: '#065A83', color_3:'#94AD42', color_4:'#BBB345', color_5:'#6303D0', color_6:'#604B3B' }
 ];
 
 const projectsData = [{
+  id: 1,
   name: 'Project 1',
   palettes: fakePalettes1
 },
 {
+  id: 2,
   name: 'Project 2',
   palettes: fakePalettes2
 }];
