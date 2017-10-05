@@ -1,15 +1,14 @@
 const express = require('express');
 const app = express();
-
 const bodyParser = require('body-parser')
+
 app.set('port', process.env.PORT || 3000);
 app.use(bodyParser.json())
+app.use(express.static(__dirname + '/public'));
 
 const environment = process.env.NODE_ENV || 'development';
 const configuration = require('./knexfile')[environment];
 const database = require('knex')(configuration);
-
-app.use(express.static(__dirname + '/public'));
 
 app.get('/', (request, response) => {
   response.sendfile('index.html');
@@ -18,10 +17,10 @@ app.get('/', (request, response) => {
 app.get('/api/v1/projects', (request, response) => {
   database('projects').select().orderBy('id')
     .then((projects) => {
-      response.status(200).json({ projects })
+      response.status(200).json(projects)
     })
     .catch((error) => {
-      response.status(500).json({ error })
+      response.status(500).json(error)
     });
 });
 
@@ -30,10 +29,10 @@ app.get('/api/v1/palettes/:id', (request, response) => {
 
   database('palettes').where('project_id', paletteID).orderBy('id').select()
     .then((palettes) => {
-      response.status(200).json({ palettes })
+      response.status(200).json(palettes )
     })
     .catch((error) => {
-      response.status(500).json({ error })
+      response.status(500).json(error)
     });
 });
 
