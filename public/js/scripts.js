@@ -1,16 +1,12 @@
 $(document).ready(() => {
   generateNewPalette()
-  populateProjects()
+  fetch('/api/v1/projects')
+    .then((response) => {
+      return response.json();
+  }).then((data) => {
+    populateProjects(data.projects)
+  })
 });
-
-const projects = ['Project 1', 'Project 2', 'Project 3', 'Project 4']
-const palettes = [
-  { project: 'Project 1', name: 'Palette Uno', colors: ['#3F856C', '#065A83', '#94AD42', '#BBB345', '#6303D0', '#604B3B'] },
-  { project: 'Project 1', name: 'Palette Dos', colors: ['#68608F', '#49C262', '#AB50E5', '#BBB345', '#6303D0', '#604B3B'] },
-  { project: 'Project 2', name: 'Palette Uno',colors: ['#68608F', '#49C262', '#AB50E5', '#BBB345', '#6303D0', '#604B3B'] },
-  { project: 'Project 3', name: 'Palette Uno', colors: ['#68608F', '#49C262', '#AB50E5', '#BBB345', '#6303D0', '#604B3B'] },
-  { project: 'Project 4', name: 'Palette Uno', colors: ['#4A914E', '#E1930C', '#C54E51', '#2DAC4A', '#898117', '#8D2380'] }
-]
 
 $('img').click((e) => {
   if ($(e.target).attr('class') == 'unlocked') {
@@ -61,40 +57,44 @@ const selectProject = () => {
   console.log('PROJECT SELECTED!')
 }
 
-const populateProjects = () => {
+const populateProjects = (projects) => {
   projects.forEach(project => {
-    let listHTML = `<a class="dropdown-project">${project}</a>`;
-    let projectHTML = getProjectHTML(project);
-    let paletteHTML = populateProjectPalettes(project)
+    console.log(project)
+    let { id, name } = project;
+    let listHTML = `<a class="dropdown-project">${name}</a>`;
+    let projectHTML = getProjectHTML(id, name);
     $('#myDropdown').append(listHTML);
     $('.saved-palette-container').append(projectHTML)
-    $('.palette-container:last').append(paletteHTML)
+    populateProjectPalettes(id)
   })
 }
 
-const getProjectHTML = (project) => {
+const getProjectHTML = (id, name) => {
   let html = `<div class='project-container' onclick='selectProject()'>
-                <h2>${project}</h2>
-                <div class='palette-container'>
+                <h2>${name}</h2>
+                <div id=${id} class='palette-container'>
                 </div>
               </div>`;
   return html;
 }
 
-const populateProjectPalettes = (project) => {
-  let paletteHTML = '';
-  let projectPalette = palettes.filter((palette) => {
-    return palette.project == project
-  })
-  projectPalette.forEach(palette => {
-    paletteHTML = paletteHTML.concat(generateSavedPalette(palette.name, palette.colors));
-  })
-  return paletteHTML;
+const populateProjectPalettes = (projectID) => {
+  fetch(`/api/v1/palettes/${projectID}`)
+    .then((response) => {
+      return response.json()
+    }).then((data) => {
+      console.log(data.palettes)
+      data.palettes.forEach(palette => {
+        let { id, name, color_1, color_2, color_3, color_4, color_5, color_6, project_id } = palette;
+        let colors = [ color_1, color_2, color_3, color_4, color_5, color_6 ];
+        $(`#${projectID}.palette-container`).append(generateSavedPalette(id, name, colors))
+      })
+    })
 }
 
-const generateSavedPalette = (name, colors) => {
+const generateSavedPalette = (id, name, colors) => {
   let html = `
-    <div class="saved-palette">
+    <div id=${id} class="saved-palette">
       <h3>${name}</h3>
       <ul class="color-box-container">
         <li class="color-box" style="background-color:${colors[0]}"/>

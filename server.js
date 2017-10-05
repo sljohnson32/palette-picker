@@ -15,7 +15,7 @@ app.get('/', (request, response) => {
 })
 
 app.get('/api/v1/projects', (request, response) => {
-  database('projects').select()
+  database('projects').select().orderBy('id')
     .then((projects) => {
       response.status(200).json({ projects })
     })
@@ -24,8 +24,10 @@ app.get('/api/v1/projects', (request, response) => {
     });
 });
 
-app.get('/api/v1/palettes', (request, response) => {
-  database('palettes').select()
+app.get('/api/v1/palettes/:id', (request, response) => {
+  const paletteID = request.params.id
+
+  database('palettes').where('project_id', paletteID).orderBy('id').select()
     .then((palettes) => {
       response.status(200).json({ palettes })
     })
