@@ -20,7 +20,7 @@ $('img').click((e) => {
 
 
 const showDropDown = () => {
-    document.getElementById("myDropdown").classList.toggle("show");
+    document.getElementById("dropdowns").classList.toggle("show");
 }
 
 const generateNewPalette = () => {
@@ -42,6 +42,15 @@ const getRandomColor = () => {
     return colorCode
 }
 
+const selectProjectDropdown = (e, name) => {
+  console.log('DROPDOWN SELECTED!', e.target.id)
+
+  let id = e.target.id;
+  $('h4.dropdown-name').text(`${name}`);
+  $('#dropdowns').toggleClass('show');
+  $('#dropdowns').attr("ref", id);
+}
+
 const savePalette = () => {
   console.log('PALATE SAVED!')
 }
@@ -50,12 +59,15 @@ const saveProject = () => {
   console.log('PROJECT SAVED!')
 }
 
-const selectPalette = (id) => {
-  console.log('PALETTE SELECTED!', id)
+
+const selectPalette = (e, id) => {
+  if (!$(e.target).hasClass('delete-button')) {
+    console.log('PALETTE SELECTED!', id)
+  }
 }
 
-const selectProjectDropdown = (e) => {
-  console.log('DROPDOWN SELECTED!', e.target.id)
+const deletePalette = (e) => {
+  console.log('DELETED', e.target.id)
 }
 
 const populateProjects = (projects) => {
@@ -63,9 +75,9 @@ const populateProjects = (projects) => {
   projects.forEach(project => {
     let { id, name } = project;
     let listHTML = $(`<a id=${id} class="dropdown-project">${name}</a>`);
-    listHTML.click(e => selectProjectDropdown(e))
+    listHTML.click(e => selectProjectDropdown(e, name))
     let projectHTML = getProjectHTML(id, name);
-    $('#myDropdown').append(listHTML);
+    $('#dropdowns').append(listHTML);
     $('.saved-palette-container').append(projectHTML)
     populateProjectPalettes(id)
   })
@@ -95,8 +107,10 @@ const populateProjectPalettes = (projectID) => {
 }
 
 const generateSavedPalette = (id, name, colors) => {
+  let paletteContainer = $(`<div id=${id} class="saved-palette"></div>`)
+  paletteContainer.click(e => selectPalette(e, id));
+
   let paletteHTML = $(`
-    <div id=${id} class="saved-palette">
       <h3>${name}</h3>
       <ul class="color-box-container">
         <li class="color-box" style="background-color:${colors[0]}"/>
@@ -106,16 +120,20 @@ const generateSavedPalette = (id, name, colors) => {
         <li class="color-box" style="background-color:${colors[4]}"/>
         <li class="color-box" style="background-color:${colors[5]}"/>
       </ul>
-      <img src='./imgs/trash-bin.png' />
-    </div>
   `);
-  paletteHTML.click(() => selectPalette(id));
-  return paletteHTML;
+
+  let trashHTML = $(`<img id=${id} class='delete-button' src='./imgs/trash-bin.png' />`)
+  trashHTML.click((e) => deletePalette(e))
+
+  paletteContainer.append(paletteHTML)
+  paletteContainer.append(trashHTML)
+
+  return paletteContainer;
 }
 
 // Close the dropdown menu if the user clicks outside of it
 window.onclick = (event) => {
-  if (!event.target.matches('.dropbtn') && !event.target.matches('.dropdown-project') ) {
+  if (!event.target.matches('.dropdown-button') && !event.target.matches('.dropdown-project') ) {
 
     let dropdowns = document.getElementsByClassName("dropdown-content");
     let i;
