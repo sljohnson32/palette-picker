@@ -35,15 +35,26 @@ const showDropDown = () => {
     document.getElementById("dropdowns").classList.toggle("show");
 }
 
-const generateNewPalette = () => {
-  $('.color-container').each((index, element) => {
-    if ($(element).find("img").hasClass('unlocked')) {
-      let colorCode = getRandomColor()
-      $(element).find('p').text(colorCode);
-      $(element).attr('id', colorCode);
-      $(element).css("background-color", colorCode);
-    }
-  })
+const generateNewPalette = (colors) => {
+  if (colors) {
+    $('.color-container').each((index, element) => {
+      if ($(element).find("img").hasClass('unlocked')) {
+        let colorCode = colors[0]
+        $(element).find('p').text(colorCode);
+        $(element).attr('id', colorCode);
+        $(element).css("background-color", colorCode);
+      }
+    })
+  } else {
+    $('.color-container').each((index, element) => {
+      if ($(element).find("img").hasClass('unlocked')) {
+        let colorCode = getRandomColor()
+        $(element).find('p').text(colorCode);
+        $(element).attr('id', colorCode);
+        $(element).css("background-color", colorCode);
+      }
+    })
+  }
 }
 
 const getRandomColor = () => {
@@ -171,6 +182,22 @@ const setProject = () => {
 
 const selectPalette = (e, id) => {
   if (!$(e.target).hasClass('delete-button')) {
+    let colors = $(e.target).parents('.project-container').find('ul').children('li').val()
+    let projectName = $(e.target).parents('.project-container').children('h2').text();
+    let paletteName = $(e.target).parents('.saved-palette').children('h3').text();
+    let projectID = $(e.target).closest('.saved-palette').attr('id');;
+    let paletteID = $(e.target).closest('.palette-container').attr('id');;
+
+    generateNewPalette(colors);
+    $('#dropdowns').attr("ref", projectID);
+    $(`a#${projectID}`).toggleClass('selected');
+    $('.dropdown-button').text(`${projectName}`);
+    $('button.dropdown-button').css('background-color', '#303F9F');
+    // $('#input-project-name').val(projectName);
+    $('#input-palette-name').val(paletteName);
+    $('.palette-save-btn').attr('disabled', false)
+
+    console.log(colors, projectName, paletteName, projectID, paletteID)
     console.log('PALETTE SELECTED!', id)
   }
 }
@@ -222,7 +249,6 @@ const populateProjectPalettes = (projectID) => {
 
 const generateSavedPalette = (id, name, colors) => {
   let paletteContainer = $(`<div id=${id} class="saved-palette"></div>`)
-  paletteContainer.click(e => selectPalette(e, id));
 
   let paletteHTML = $(`
       <h3>${name}</h3>
@@ -241,6 +267,7 @@ const generateSavedPalette = (id, name, colors) => {
 
   paletteContainer.append(paletteHTML)
   paletteContainer.append(trashHTML)
+  paletteContainer.click(e => selectPalette(e, id));
 
   return paletteContainer;
 }
