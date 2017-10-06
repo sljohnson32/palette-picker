@@ -120,7 +120,7 @@ app.delete('/api/v1/palettes/:id', (request, response) => {
 
 })
 
-app.listen(app.get('port') || 3000, () => {
+app.listen(app.get('port'), () => {
   console.log(`${app.get('env')} server is running on localhost:${app.get('port')}.`);
 });
 
