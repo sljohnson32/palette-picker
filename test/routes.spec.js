@@ -202,7 +202,7 @@ describe('API Routes', () => {
       .delete('/api/v1/palettes/4')
       .end((error, response) => {
         response.should.have.status(200);
-        response.res.text.should.equal("Palette with id: 4 was deleted!");
+        response.body.should.equal("Palette with id: 4 was deleted!");
         //add integration testing to confirm number of palettes before and after
         done();
       });

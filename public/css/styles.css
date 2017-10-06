@@ -50,6 +50,10 @@ button:disabled {
   opacity: .7;
 }
 
+.save-set-btns {
+  width: 140px;
+}
+
 input {
   border-radius: 5px;
   height: 20px;
