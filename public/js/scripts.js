@@ -25,9 +25,9 @@ $('#input-palette-name').on('keyup', (e) => {
 })
 
 $('#input-project-name').on('keyup', (e) => {
-  if ($(e.target).val() != '' && $('.project-save-btn').attr('disabled') != false)   {
-    $('.project-save-btn').attr('disabled', false)
-  } else $('.project-save-btn').attr('disabled', true)
+  if ($(e.target).val() != '' && $('.project-set-btn').attr('disabled') != false)   {
+    $('.project-set-btn').attr('disabled', false)
+  } else $('.project-set-btn').attr('disabled', true)
 })
 
 
@@ -52,7 +52,7 @@ const getRandomColor = () => {
     for (let i = 0; i < 6; i++) {
         colorCode += chars[Math.floor(Math.random() * 16)]
     }
-    return colorCode
+    return colorCode;
 }
 
 const selectProjectDropdown = (e, name) => {
@@ -62,31 +62,64 @@ const selectProjectDropdown = (e, name) => {
   $('#dropdowns').attr("ref", id);
 }
 
-const savePalette = () => {
+const getColors = () => {
+  return [
+    $($('.color-container')[0]).attr('id'),
+    $($('.color-container')[1]).attr('id'),
+    $($('.color-container')[2]).attr('id'),
+    $($('.color-container')[3]).attr('id'),
+    $($('.color-container')[4]).attr('id'),
+    $($('.color-container')[5]).attr('id')
+  ]
+}
 
-  let projectName = $('#input-project-name').val();
-  fetch('/api/v1/projects', {
-    method: 'post',
-    headers: {
-        'Accept': 'application/json, text/plain',
-        'Content-Type': 'application/json'
-      },
-    body: JSON.stringify({ name: projectName })
-  })
-  .then(response => response.json())
-  .then(data => {
-    let projectID = data.id
+const savePalette = () => {
+  let id = $('#dropdowns').attr('ref')
+  if (id) {
+    let projectID = id;
+    let paletteBody = getPaletteBody(projectID);
     fetch('/api/v1/palettes', {
       method: 'post',
       headers: {
           'Accept': 'application/json, text/plain',
           'Content-Type': 'application/json'
         },
-      body: JSON.stringify(getPaletteBody(projectID))
+      body: JSON.stringify(paletteBody)
     })
     .then(response => response.json())
-    .then(data => populateProjects([{ id: projectID, name: projectName }]));
-  })
+    .then(data => {
+      let paletteID = data.id;
+      let colors = getColors();
+      console.log(colors)
+      let paletteHTML = generateSavedPalette(paletteID, paletteBody.name, colors)
+      $(`#${projectID}.palette-container`).append(paletteHTML);
+    })
+
+  } else {
+    let projectName = $('#input-project-name').val();
+    fetch('/api/v1/projects', {
+      method: 'post',
+      headers: {
+          'Accept': 'application/json, text/plain',
+          'Content-Type': 'application/json'
+        },
+      body: JSON.stringify({ name: projectName })
+    })
+    .then(response => response.json())
+    .then(data => {
+      let projectID = data.id
+      fetch('/api/v1/palettes', {
+        method: 'post',
+        headers: {
+            'Accept': 'application/json, text/plain',
+            'Content-Type': 'application/json'
+          },
+        body: JSON.stringify(getPaletteBody(projectID))
+      })
+      .then(response => response.json())
+      .then(data => populateProjects([{ id: projectID, name: projectName }]));
+    })
+  }
 }
 
 const getPaletteBody = (id) => {
@@ -103,9 +136,10 @@ const getPaletteBody = (id) => {
 }
 
 const setProject = () => {
-  console.log('PROJECT SAVED!')
-
-
+  let projectName = $('#input-project-name').val()
+  let listHTML = $(`<a class="dropdown-project">${projectName}</a>`);
+  $('h4.dropdown-name').text(`${projectName}`);
+  $('#dropdowns').attr("ref", null).append(listHTML);
 }
 
 
