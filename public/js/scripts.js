@@ -55,6 +55,13 @@ const getRandomColor = () => {
     return colorCode;
 }
 
+const resetControls = () => {
+  $('h4.dropdown-name').text('Select Project');
+  $('#dropdowns').attr("ref", null);
+  $('#input-project-name').val('');
+  $('#input-palette-name').val('');
+}
+
 const selectProjectDropdown = (e, name) => {
   let id = e.target.id;
   $('h4.dropdown-name').text(`${name}`);
@@ -93,6 +100,7 @@ const savePalette = () => {
       console.log(colors)
       let paletteHTML = generateSavedPalette(paletteID, paletteBody.name, colors)
       $(`#${projectID}.palette-container`).append(paletteHTML);
+      resetControls();
     })
 
   } else {
@@ -117,7 +125,12 @@ const savePalette = () => {
         body: JSON.stringify(getPaletteBody(projectID))
       })
       .then(response => response.json())
-      .then(data => populateProjects([{ id: projectID, name: projectName }]));
+      .then(data => {
+        populateProjects([
+          { id: projectID, name: projectName }
+        ]);
+        resetControls();
+      });
     })
   }
 }
@@ -150,7 +163,12 @@ const selectPalette = (e, id) => {
 }
 
 const deletePalette = (e) => {
-  console.log('DELETED', e.target.id)
+  let paletteID = e.target.id;
+  fetch(`/api/v1/palettes/${paletteID}`, {
+    method: 'delete',
+  })
+  .then(response => response.json())
+  .then(() => $(`#${paletteID}`).children().remove())
 }
 
 const populateProjects = (projects) => {
