@@ -19,7 +19,7 @@ $('img').click((e) => {
 })
 
 $('#input-palette-name').on('keyup', (e) => {
-  if ($(e.target).val() != '' && $('.palette-save-btn').attr('disabled') != false)   {
+  if ($(e.target).val() != '' && $('.palette-save-btn').attr('disabled') != false && $('a.dropdown-project').hasClass('selected')) {
     $('.palette-save-btn').attr('disabled', false)
   } else $('.palette-save-btn').attr('disabled', true)
 })
@@ -56,17 +56,29 @@ const getRandomColor = () => {
 }
 
 const resetControls = () => {
-  $('h4.dropdown-name').text('Select Project');
+  $('button.dropdown-button').html('Select Project &#9660;');
   $('#dropdowns').attr("ref", null);
   $('#input-project-name').val('');
   $('#input-palette-name').val('');
+  $('button.dropdown-button').css('background-color', '#4CAF50')
+  $('a.selected').toggleClass('selected');
+  $('.save-set-btns').attr('disabled', true);
 }
 
 const selectProjectDropdown = (e, name) => {
   let id = e.target.id;
-  $('h4.dropdown-name').text(`${name}`);
+  if (id) {
+    $('#dropdowns').attr("ref", id);
+  } else {
+    $('#dropdowns').attr("ref", null);
+  }
+  $(e.target).toggleClass('selected');
+  $('.dropdown-button').text(`${name}`);
   $('#dropdowns').toggleClass('show');
-  $('#dropdowns').attr("ref", id);
+  $('button.dropdown-button').css('background-color', '#303F9F');
+  if ($('#input-palette-name').val() != '') {
+    $('.palette-save-btn').attr('disabled', false)
+  }
 }
 
 const getColors = () => {
@@ -150,8 +162,9 @@ const getPaletteBody = (id) => {
 
 const setProject = () => {
   let projectName = $('#input-project-name').val()
-  let listHTML = $(`<a class="dropdown-project">${projectName}</a>`);
-  $('h4.dropdown-name').text(`${projectName}`);
+  let listHTML = $(`<a class="dropdown-project selected">${projectName}</a>`);
+  listHTML.click(e => selectProjectDropdown(e, projectName))
+  $('button.dropdown-button').text(`${projectName}`);
   $('#dropdowns').attr("ref", null).append(listHTML);
 }
 
@@ -194,11 +207,11 @@ const getProjectHTML = (id, name) => {
 }
 
 const populateProjectPalettes = (projectID) => {
-  console.log(projectID)
   fetch(`/api/v1/palettes/${projectID}`)
     .then((response) => {
       return response.json()
     }).then((data) => {
+      if (typeof data === 'string') {return console.log(data)}
       data.forEach(palette => {
         let { id, name, color_1, color_2, color_3, color_4, color_5, color_6, project_id } = palette;
         let colors = [ color_1, color_2, color_3, color_4, color_5, color_6 ];
