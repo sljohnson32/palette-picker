@@ -117,7 +117,6 @@ app.delete('/api/v1/palettes/:id', (request, response) => {
     .catch(error => {
       response.status(500).json(error)
     })
-
 })
 
 app.listen(process.env.PORT || 3000, () => {
