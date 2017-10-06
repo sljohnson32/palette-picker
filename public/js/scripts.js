@@ -56,17 +56,29 @@ const getRandomColor = () => {
 }
 
 const resetControls = () => {
-  $('h4.dropdown-name').text('Select Project');
+  $('button.dropdown-button').html('Select Project &#9660;');
   $('#dropdowns').attr("ref", null);
   $('#input-project-name').val('');
   $('#input-palette-name').val('');
+  $('button.dropdown-button').css('background-color', '#4CAF50')
+  $('a.selected').toggleClass('selected');
 }
 
 const selectProjectDropdown = (e, name) => {
   let id = e.target.id;
-  $('h4.dropdown-name').text(`${name}`);
-  $('#dropdowns').toggleClass('show');
-  $('#dropdowns').attr("ref", id);
+  if (id) {
+    $(e.target).toggleClass('selected');
+    $('.dropdown-button').text(`${name}`);
+    $('#dropdowns').toggleClass('show');
+    $('#dropdowns').attr("ref", id);
+    $('button.dropdown-button').css('background-color', '#303F9F');
+  } else {
+    $(e.target).toggleClass('selected');
+    $('.dropdown-button').text(`${name}`);
+    $('#dropdowns').toggleClass('show');
+    $('#dropdowns').attr("ref", null);
+    $('button.dropdown-button').css('background-color', '#303F9F');
+  }
 }
 
 const getColors = () => {
@@ -150,8 +162,9 @@ const getPaletteBody = (id) => {
 
 const setProject = () => {
   let projectName = $('#input-project-name').val()
-  let listHTML = $(`<a class="dropdown-project">${projectName}</a>`);
-  $('h4.dropdown-name').text(`${projectName}`);
+  let listHTML = $(`<a class="dropdown-project selected">${projectName}</a>`);
+  listHTML.click(e => selectProjectDropdown(e, projectName))
+  $('button.dropdown-button').text(`${projectName}`);
   $('#dropdowns').attr("ref", null).append(listHTML);
 }
 
