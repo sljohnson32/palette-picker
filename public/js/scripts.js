@@ -27,8 +27,9 @@ const generateNewPalette = () => {
   $('.color-container').each((index, element) => {
     if ($(element).find("img").hasClass('unlocked')) {
       let colorCode = getRandomColor()
-      $(element).find('p').text(colorCode)
-      $(element).css("background-color", colorCode)
+      $(element).find('p').text(colorCode);
+      $(element).attr('id', colorCode);
+      $(element).css("background-color", colorCode);
     }
   })
 }
@@ -43,8 +44,6 @@ const getRandomColor = () => {
 }
 
 const selectProjectDropdown = (e, name) => {
-  console.log('DROPDOWN SELECTED!', e.target.id)
-
   let id = e.target.id;
   $('h4.dropdown-name').text(`${name}`);
   $('#dropdowns').toggleClass('show');
@@ -52,11 +51,50 @@ const selectProjectDropdown = (e, name) => {
 }
 
 const savePalette = () => {
-  console.log('PALATE SAVED!')
+
+  let projectName = $('#input-project-name').val();
+  fetch('/api/v1/projects', {
+    method: 'post',
+    headers: {
+        'Accept': 'application/json, text/plain',
+        'Content-Type': 'application/json'
+      },
+    body: JSON.stringify({ name: projectName })
+  })
+  .then(response => response.json())
+  .then(data => {
+    let projectID = data.id
+    fetch('/api/v1/palettes', {
+      method: 'post',
+      headers: {
+          'Accept': 'application/json, text/plain',
+          'Content-Type': 'application/json'
+        },
+      body: JSON.stringify(getPaletteBody(projectID))
+    })
+    .then(response => response.json())
+    .then(data => populateProjects([{ id: projectID, name: projectName }]));
+  })
 }
 
-const saveProject = () => {
+
+const getPaletteBody = (id) => {
+  return {
+    name: $('#input-palette-name').val(),
+    color_1: $($('.color-container')[0]).attr('id'),
+    color_2: $($('.color-container')[1]).attr('id'),
+    color_3: $($('.color-container')[2]).attr('id'),
+    color_4: $($('.color-container')[3]).attr('id'),
+    color_5: $($('.color-container')[4]).attr('id'),
+    color_6: $($('.color-container')[5]).attr('id'),
+    project_id: id
+  }
+}
+
+const setProject = () => {
   console.log('PROJECT SAVED!')
+
+
 }
 
 
@@ -71,7 +109,6 @@ const deletePalette = (e) => {
 }
 
 const populateProjects = (projects) => {
-  console.log('Passed Data', projects)
   projects.forEach(project => {
     let { id, name } = project;
     let listHTML = $(`<a id=${id} class="dropdown-project">${name}</a>`);
@@ -94,6 +131,7 @@ const getProjectHTML = (id, name) => {
 }
 
 const populateProjectPalettes = (projectID) => {
+  console.log(projectID)
   fetch(`/api/v1/palettes/${projectID}`)
     .then((response) => {
       return response.json()
