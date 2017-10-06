@@ -18,6 +18,18 @@ $('img').click((e) => {
   }
 })
 
+$('#input-palette-name').on('keyup', (e) => {
+  if ($(e.target).val() != '' && $('.palette-save-btn').attr('disabled') != false)   {
+    $('.palette-save-btn').attr('disabled', false)
+  } else $('.palette-save-btn').attr('disabled', true)
+})
+
+$('#input-project-name').on('keyup', (e) => {
+  if ($(e.target).val() != '' && $('.project-save-btn').attr('disabled') != false)   {
+    $('.project-save-btn').attr('disabled', false)
+  } else $('.project-save-btn').attr('disabled', true)
+})
+
 
 const showDropDown = () => {
     document.getElementById("dropdowns").classList.toggle("show");
@@ -76,7 +88,6 @@ const savePalette = () => {
     .then(data => populateProjects([{ id: projectID, name: projectName }]));
   })
 }
-
 
 const getPaletteBody = (id) => {
   return {
