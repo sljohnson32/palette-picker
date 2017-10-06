@@ -117,10 +117,11 @@ app.delete('/api/v1/palettes/:id', (request, response) => {
     .catch(error => {
       response.status(500).json(error)
     })
+
 })
 
-app.listen(process.env.PORT || 3000, () => {
-  console.log("Express server listening on port %d in %s mode", app.get('port'), app.get('env'));
+app.listen(app.get('port') || 3000, () => {
+  console.log(`${app.get('env')} server is running on localhost:${app.get('port')}.`);
 });
 
 module.exports = app;
