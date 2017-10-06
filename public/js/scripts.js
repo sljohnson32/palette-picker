@@ -19,7 +19,7 @@ $('img').click((e) => {
 })
 
 $('#input-palette-name').on('keyup', (e) => {
-  if ($(e.target).val() != '' && $('.palette-save-btn').attr('disabled') != false)   {
+  if ($(e.target).val() != '' && $('.palette-save-btn').attr('disabled') != false && $('a.dropdown-project').hasClass('selected')) {
     $('.palette-save-btn').attr('disabled', false)
   } else $('.palette-save-btn').attr('disabled', true)
 })
@@ -62,22 +62,22 @@ const resetControls = () => {
   $('#input-palette-name').val('');
   $('button.dropdown-button').css('background-color', '#4CAF50')
   $('a.selected').toggleClass('selected');
+  $('.save-set-btns').attr('disabled', true);
 }
 
 const selectProjectDropdown = (e, name) => {
   let id = e.target.id;
   if (id) {
-    $(e.target).toggleClass('selected');
-    $('.dropdown-button').text(`${name}`);
-    $('#dropdowns').toggleClass('show');
     $('#dropdowns').attr("ref", id);
-    $('button.dropdown-button').css('background-color', '#303F9F');
   } else {
-    $(e.target).toggleClass('selected');
-    $('.dropdown-button').text(`${name}`);
-    $('#dropdowns').toggleClass('show');
     $('#dropdowns').attr("ref", null);
-    $('button.dropdown-button').css('background-color', '#303F9F');
+  }
+  $(e.target).toggleClass('selected');
+  $('.dropdown-button').text(`${name}`);
+  $('#dropdowns').toggleClass('show');
+  $('button.dropdown-button').css('background-color', '#303F9F');
+  if ($('#input-palette-name').val() != '') {
+    $('.palette-save-btn').attr('disabled', false)
   }
 }
 
