@@ -207,7 +207,6 @@ const getProjectHTML = (id, name) => {
 }
 
 const populateProjectPalettes = (projectID) => {
-  console.log(projectID)
   fetch(`/api/v1/palettes/${projectID}`)
     .then((response) => {
       return response.json()
