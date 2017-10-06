@@ -35,15 +35,27 @@ const showDropDown = () => {
     document.getElementById("dropdowns").classList.toggle("show");
 }
 
-const generateNewPalette = () => {
-  $('.color-container').each((index, element) => {
-    if ($(element).find("img").hasClass('unlocked')) {
-      let colorCode = getRandomColor()
-      $(element).find('p').text(colorCode);
-      $(element).attr('id', colorCode);
-      $(element).css("background-color", colorCode);
-    }
-  })
+const generateNewPalette = (colors, id) => {
+  if (colors != undefined) {
+    $('.color-container').attr('ref', id)
+    $('.color-container').each((index, element) => {
+      if ($(element).find("img").hasClass('unlocked')) {
+        let colorCode = colors[index]
+        $(element).find('p').text(colorCode);
+        $(element).attr('id', colorCode);
+        $(element).css("background-color", colorCode);
+      }
+    })
+  } else {
+    $('.color-container').each((index, element) => {
+      if ($(element).find("img").hasClass('unlocked')) {
+        let colorCode = getRandomColor()
+        $(element).find('p').text(colorCode);
+        $(element).attr('id', colorCode);
+        $(element).css("background-color", colorCode);
+      }
+    })
+  }
 }
 
 const getRandomColor = () => {
@@ -63,6 +75,7 @@ const resetControls = () => {
   $('button.dropdown-button').css('background-color', '#4CAF50')
   $('a.selected').toggleClass('selected');
   $('.save-set-btns').attr('disabled', true);
+  $('.color-container').removeAttr('ref')
 }
 
 const selectProjectDropdown = (e, name) => {
@@ -93,59 +106,76 @@ const getColors = () => {
 }
 
 const savePalette = () => {
-  let id = $('#dropdowns').attr('ref')
-  if (id) {
-    let projectID = id;
-    let paletteBody = getPaletteBody(projectID);
-    fetch('/api/v1/palettes', {
-      method: 'post',
+  let projectID = $('#dropdowns').attr('ref');
+  let existingPaletteID = $('.color-container').attr('ref');
+  let paletteBody = getPaletteBody(projectID);
+
+  if (existingPaletteID) {
+    fetch(`/api/v1/palettes/${existingPaletteID}`, {
+      method: 'put',
       headers: {
-          'Accept': 'application/json, text/plain',
+          // 'Accept': 'application/json, text/plain',
           'Content-Type': 'application/json'
         },
       body: JSON.stringify(paletteBody)
     })
     .then(response => response.json())
     .then(data => {
-      let paletteID = data.id;
+
       let colors = getColors();
-      console.log(colors)
-      let paletteHTML = generateSavedPalette(paletteID, paletteBody.name, colors)
-      $(`#${projectID}.palette-container`).append(paletteHTML);
+      let paletteHTML = generateSavedPalette(existingPaletteID, paletteBody.name, colors)
+      $(`#${projectID}.palette-container`).html(paletteHTML);
       resetControls();
     })
-
-  } else {
-    let projectName = $('#input-project-name').val();
-    fetch('/api/v1/projects', {
-      method: 'post',
-      headers: {
-          'Accept': 'application/json, text/plain',
-          'Content-Type': 'application/json'
-        },
-      body: JSON.stringify({ name: projectName })
-    })
-    .then(response => response.json())
-    .then(data => {
-      let projectID = data.id
+  } else if (projectID) {
       fetch('/api/v1/palettes', {
         method: 'post',
         headers: {
             'Accept': 'application/json, text/plain',
             'Content-Type': 'application/json'
           },
-        body: JSON.stringify(getPaletteBody(projectID))
+        body: JSON.stringify(paletteBody)
       })
       .then(response => response.json())
       .then(data => {
-        populateProjects([
-          { id: projectID, name: projectName }
-        ]);
+        let paletteID = data.id;
+        let colors = getColors();
+        let paletteHTML = generateSavedPalette(paletteID, paletteBody.name, colors)
+        $(`#${projectID}.palette-container`).append(paletteHTML);
         resetControls();
-      });
-    })
+      })
+
+    } else {
+      let projectName = $('#input-project-name').val();
+      fetch('/api/v1/projects', {
+        method: 'post',
+        headers: {
+            'Accept': 'application/json, text/plain',
+            'Content-Type': 'application/json'
+          },
+        body: JSON.stringify({ name: projectName })
+      })
+      .then(response => response.json())
+      .then(data => {
+        let projectID = data.id
+        fetch('/api/v1/palettes', {
+          method: 'post',
+          headers: {
+              'Accept': 'application/json, text/plain',
+              'Content-Type': 'application/json'
+            },
+          body: JSON.stringify(getPaletteBody(projectID))
+        })
+        .then(response => response.json())
+        .then(data => {
+          populateProjects([
+            { id: projectID, name: projectName }
+          ]);
+          resetControls();
+        });
+      })
+    }
   }
-}
 
 const getPaletteBody = (id) => {
   return {
@@ -171,7 +201,23 @@ const setProject = () => {
 
 const selectPalette = (e, id) => {
   if (!$(e.target).hasClass('delete-button')) {
-    console.log('PALETTE SELECTED!', id)
+    // let colors = $(e.target).closest('.saved-palette').find('ul').children('li').val()
+    let colors = [];
+    $(e.target).parents('.saved-palette').children('ul').children('li').each((index, color) => {
+      colors.push($(color).attr('ref'))
+    })
+    let projectName = $(e.target).parents('.project-container').children('h2').text();
+    let paletteName = $(e.target).parents('.saved-palette').children('h3').text();
+    let projectID = $(e.target).closest('.saved-palette').attr('id');;
+    let paletteID = $(e.target).closest('.palette-container').attr('id');;
+
+    generateNewPalette(colors, paletteID);
+    $('#dropdowns').attr("ref", projectID);
+    $(`a#${projectID}`).toggleClass('selected');
+    $('.dropdown-button').text(`${projectName}`);
+    $('button.dropdown-button').css('background-color', '#303F9F');
+    $('#input-palette-name').val(paletteName);
+    $('.palette-save-btn').attr('disabled', false)
   }
 }
 
@@ -222,17 +268,16 @@ const populateProjectPalettes = (projectID) => {
 
 const generateSavedPalette = (id, name, colors) => {
   let paletteContainer = $(`<div id=${id} class="saved-palette"></div>`)
-  paletteContainer.click(e => selectPalette(e, id));
 
   let paletteHTML = $(`
       <h3>${name}</h3>
       <ul class="color-box-container">
-        <li class="color-box" style="background-color:${colors[0]}"/>
-        <li class="color-box" style="background-color:${colors[1]}"/>
-        <li class="color-box" style="background-color:${colors[2]}"/>
-        <li class="color-box" style="background-color:${colors[3]}"/>
-        <li class="color-box" style="background-color:${colors[4]}"/>
-        <li class="color-box" style="background-color:${colors[5]}"/>
+        <li class="color-box" ref=${colors[0]} style="background-color:${colors[0]}"/>
+        <li class="color-box" ref=${colors[1]} style="background-color:${colors[1]}"/>
+        <li class="color-box" ref=${colors[2]} style="background-color:${colors[2]}"/>
+        <li class="color-box" ref=${colors[3]} style="background-color:${colors[3]}"/>
+        <li class="color-box" ref=${colors[4]} style="background-color:${colors[4]}"/>
+        <li class="color-box" ref=${colors[5]} style="background-color:${colors[5]}"/>
       </ul>
   `);
 
@@ -241,6 +286,7 @@ const generateSavedPalette = (id, name, colors) => {
 
   paletteContainer.append(paletteHTML)
   paletteContainer.append(trashHTML)
+  paletteContainer.click(e => selectPalette(e, id));
 
   return paletteContainer;
 }
