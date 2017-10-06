@@ -27,15 +27,18 @@ app.get('/api/v1/projects', (request, response) => {
 
 
 app.get('/api/v1/palettes/:id', (request, response) => {
-  const paletteID = request.params.id
+  const projectID = request.params.id
 
 
-  database('palettes').where('project_id', paletteID).orderBy('id').select()
+  database('palettes').where('project_id', projectID).orderBy('id').select()
     .then((palettes) => {
       if (palettes.length > 0) {
         return response.status(200).json(palettes)
       } else {
-        response.status(404).json({ error: `There is no project with id: ${paletteID} in the database.` })
+        let projectExists = database('projects').where('id', projectID).select()
+        if (projectExists.length == 0) {
+          response.status(404).json({ error: `There is no project with id: ${projectID} in the database.` })
+        } else response.status(200).json(`There are no palettes saved for project with id: ${projectID}.`)
       }
     })
     .catch((error) => {

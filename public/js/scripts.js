@@ -212,6 +212,7 @@ const populateProjectPalettes = (projectID) => {
     .then((response) => {
       return response.json()
     }).then((data) => {
+      if (typeof data === 'string') {return console.log(data)}
       data.forEach(palette => {
         let { id, name, color_1, color_2, color_3, color_4, color_5, color_6, project_id } = palette;
         let colors = [ color_1, color_2, color_3, color_4, color_5, color_6 ];
