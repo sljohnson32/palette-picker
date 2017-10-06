@@ -18,9 +18,6 @@ $('img').click((e) => {
   }
 })
 
-$('.dropdown-project').on('click', (e) => {
-  console.log($(e.target))
-})
 
 const showDropDown = () => {
     document.getElementById("myDropdown").classList.toggle("show");
@@ -53,24 +50,30 @@ const saveProject = () => {
   console.log('PROJECT SAVED!')
 }
 
-const selectProject = () => {
-  console.log('PROJECT SELECTED!')
+const selectPalette = (id) => {
+  console.log('PALETTE SELECTED!', id)
+}
+
+const selectProjectDropdown = (e) => {
+  console.log('DROPDOWN SELECTED!', e.target.id)
 }
 
 const populateProjects = (projects) => {
   console.log('Passed Data', projects)
   projects.forEach(project => {
     let { id, name } = project;
-    let listHTML = `<a class="dropdown-project">${name}</a>`;
+    let listHTML = $(`<a id=${id} class="dropdown-project">${name}</a>`);
+    listHTML.click(e => selectProjectDropdown(e))
     let projectHTML = getProjectHTML(id, name);
     $('#myDropdown').append(listHTML);
     $('.saved-palette-container').append(projectHTML)
     populateProjectPalettes(id)
   })
+
 }
 
 const getProjectHTML = (id, name) => {
-  let html = `<div class='project-container' onclick='selectProject()'>
+  let html = `<div class='project-container'>
                 <h2>${name}</h2>
                 <div id=${id} class='palette-container'>
                 </div>
@@ -92,7 +95,7 @@ const populateProjectPalettes = (projectID) => {
 }
 
 const generateSavedPalette = (id, name, colors) => {
-  let html = `
+  let paletteHTML = $(`
     <div id=${id} class="saved-palette">
       <h3>${name}</h3>
       <ul class="color-box-container">
@@ -105,8 +108,9 @@ const generateSavedPalette = (id, name, colors) => {
       </ul>
       <img src='./imgs/trash-bin.png' />
     </div>
-  `
-  return html;
+  `);
+  paletteHTML.click(() => selectPalette(id));
+  return paletteHTML;
 }
 
 // Close the dropdown menu if the user clicks outside of it
