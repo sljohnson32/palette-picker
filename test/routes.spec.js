@@ -41,7 +41,7 @@ describe('API Routes', () => {
     .then(() => {
       database.migrate.latest()
       .then(() => {
-        return database.seed.run()
+        database.seed.run()
         .then(() => {
           done()
         });
@@ -106,10 +106,111 @@ describe('API Routes', () => {
         done();
       });
     });
+
+    it('should return a 500 error if the id provided is not an integer', (done) => {
+      chai.request(server)
+      .get('/api/v1/palettes/sam')
+      .end((error, response) => {
+        response.should.have.status(500);
+        done();
+      });
+    });
+  });
+
+  describe('POST /api/v1/projects', () => {
+    it('should add a project and return the new project id', (done) => {
+      chai.request(server)
+      .post('/api/v1/projects')
+      .send({
+        id: 3,
+        name: 'Test Project'
+      })
+      .end((error, response) => {
+        response.should.have.status(201);
+        response.body.should.be.a('object');
+        response.body.should.have.property('id');
+        response.body.id.should.equal(3);
+        done();
+      });
+    });
+
+    it('should return a 422 status if project name is not included in body', (done) => {
+      chai.request(server)
+      .post('/api/v1/projects')
+      .send({
+        id: 4,
+        name: null
+      })
+      .end((error, response) => {
+        response.should.have.status(422);
+        done();
+      });
+    })
+  });
+
+  describe('POST /api/v1/palettes', () => {
+    it('should add a palette and return the new palette id', (done) => {
+      chai.request(server)
+      .post('/api/v1/palettes')
+      .send({
+        id: 5,
+        name: 'Test Palette',
+        color_1: '#68608F',
+        color_2: '#49C262',
+        color_3: '#AB50E5',
+        color_4: '#BBB345',
+        color_5: '#6303D0',
+        color_6: '#604B3B',
+        project_id: 2
+      })
+      .end((error, response) => {
+        response.should.have.status(201);
+        response.body.should.be.a('object');
+        response.body.should.have.property('id');
+        response.body.id.should.equal(5);
+        done();
+      });
+    });
+
+    it('should return a 422 status if palette name is not included in body', (done) => {
+      chai.request(server)
+      .post('/api/v1/palettes')
+      .send({
+        id: 5,
+        name: null,
+        color_1: '#68608F',
+        color_2: '#49C262',
+        color_3: '#AB50E5',
+        color_4: '#BBB345',
+        color_5: '#6303D0',
+        color_6: '#604B3B',
+        project_id: 2
+      })
+      .end((error, response) => {
+        response.should.have.status(422);
+        done();
+      });
+    });
+
+    //more tests for 422 status
+
+  });
+
+  describe('DELETE /api/v1/palettes/:id', () => {
+    it('should DELETE a palette and return the deleted palette id', (done) => {
+      chai.request(server)
+      .delete('/api/v1/palettes/4')
+      .end((error, response) => {
+        response.should.have.status(200);
+        response.res.text.should.equal("Palette with id: 4 was deleted!");
+        //add integration testing to confirm number of palettes before and after
+        done();
+      });
+    });
   });
 
 });
-//
+
 // after(() => {
 //   process.exit()
 // });

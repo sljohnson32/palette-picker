@@ -112,7 +112,7 @@ app.delete('/api/v1/palettes/:id', (request, response) => {
 
   database('palettes').where('id', paletteID).del()
     .then(() => {
-      response.status(200).json(`Palette with ${paletteID} was deleted!`)
+      response.status(200).send(`Palette with id: ${paletteID} was deleted!`)
     })
     .catch(error => {
       response.status(500).json(error)
