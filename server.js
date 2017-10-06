@@ -29,9 +29,14 @@ app.get('/api/v1/projects', (request, response) => {
 app.get('/api/v1/palettes/:id', (request, response) => {
   const paletteID = request.params.id
 
+
   database('palettes').where('project_id', paletteID).orderBy('id').select()
     .then((palettes) => {
-      response.status(200).json(palettes )
+      if (palettes.length > 0) {
+        return response.status(200).json(palettes)
+      } else {
+        response.status(404).json({ error: `There is no project with id: ${paletteID} in the database.` })
+      }
     })
     .catch((error) => {
       response.status(500).json(error)
@@ -107,7 +112,7 @@ app.delete('/api/v1/palettes/:id', (request, response) => {
 
   database('palettes').where('id', paletteID).del()
     .then(() => {
-      response.status(200).json(`Palette with ${paletteID} was deleted!`)
+      response.status(200).send(`Palette with id: ${paletteID} was deleted!`)
     })
     .catch(error => {
       response.status(500).json(error)
