@@ -1,3 +1,5 @@
+// import { getRandomColor } from './helpers';
+
 $(document).ready(() => {
   generateNewPalette()
   fetch('/api/v1/projects')
@@ -19,7 +21,7 @@ $('img').click((e) => {
 })
 
 $('#input-palette-name').on('keyup', (e) => {
-  if ($(e.target).val() != '' && $('.palette-save-btn').attr('disabled') != false && $('a.dropdown-project').hasClass('selected')) {
+  if ($(e.target).val() != '' && $('.palette-save-btn').attr('disabled') != false && $('.dropdown-button').hasClass('selected')) {
     $('.palette-save-btn').attr('disabled', false)
   } else $('.palette-save-btn').attr('disabled', true)
 })
@@ -33,6 +35,15 @@ $('#input-project-name').on('keyup', (e) => {
 
 const showDropDown = () => {
     document.getElementById("dropdowns").classList.toggle("show");
+}
+
+const getRandomColor = () => {
+  const chars = '0123456789ABCDEF'
+    let colorCode = '#'
+    for (let i = 0; i < 6; i++) {
+        colorCode += chars[Math.floor(Math.random() * 16)]
+    }
+    return colorCode;
 }
 
 const generateNewPalette = (colors, id) => {
@@ -58,15 +69,6 @@ const generateNewPalette = (colors, id) => {
   }
 }
 
-const getRandomColor = () => {
-  const chars = '0123456789ABCDEF'
-    let colorCode = '#'
-    for (let i = 0; i < 6; i++) {
-        colorCode += chars[Math.floor(Math.random() * 16)]
-    }
-    return colorCode;
-}
-
 const resetControls = () => {
   $('button.dropdown-button').html('Select Project &#9660;');
   $('#dropdowns').attr("ref", null);
@@ -75,18 +77,19 @@ const resetControls = () => {
   $('button.dropdown-button').css('background-color', '#4CAF50')
   $('a.selected').toggleClass('selected');
   $('.save-set-btns').attr('disabled', true);
-  $('.color-container').removeAttr('ref')
+  $('.color-container').removeAttr('ref');
+  $('.dropdown-button').removeClass('selected');
 }
 
-const selectProjectDropdown = (e, name) => {
-  let id = e.target.id;
+const selectProjectDropdown = (id, name) => {
+  // let id = e.target.id;
   if (id) {
     $('#dropdowns').attr("ref", id);
   } else {
     $('#dropdowns').attr("ref", null);
   }
-  $(e.target).toggleClass('selected');
   $('.dropdown-button').text(`${name}`);
+  $('.dropdown-button').addClass('selected');
   $('#dropdowns').toggleClass('show');
   $('button.dropdown-button').css('background-color', '#303F9F');
   if ($('#input-palette-name').val() != '') {
@@ -110,11 +113,14 @@ const savePalette = () => {
   let existingPaletteID = $('.color-container').attr('ref');
   let paletteBody = getPaletteBody(projectID);
 
+  console.log(paletteBody)
+
   if (existingPaletteID) {
+    paletteBody.id = projectID;
     fetch(`/api/v1/palettes/${existingPaletteID}`, {
-      method: 'put',
+      method: 'PUT',
       headers: {
-          // 'Accept': 'application/json, text/plain',
+          'Accept': 'application/json, text/plain',
           'Content-Type': 'application/json'
         },
       body: JSON.stringify(paletteBody)
@@ -129,7 +135,7 @@ const savePalette = () => {
     })
   } else if (projectID) {
       fetch('/api/v1/palettes', {
-        method: 'post',
+        method: 'POST',
         headers: {
             'Accept': 'application/json, text/plain',
             'Content-Type': 'application/json'
@@ -148,7 +154,7 @@ const savePalette = () => {
     } else {
       let projectName = $('#input-project-name').val();
       fetch('/api/v1/projects', {
-        method: 'post',
+        method: 'POST',
         headers: {
             'Accept': 'application/json, text/plain',
             'Content-Type': 'application/json'
@@ -159,7 +165,7 @@ const savePalette = () => {
       .then(data => {
         let projectID = data.id
         fetch('/api/v1/palettes', {
-          method: 'post',
+          method: 'POST',
           headers: {
               'Accept': 'application/json, text/plain',
               'Content-Type': 'application/json'
@@ -193,7 +199,7 @@ const getPaletteBody = (id) => {
 const setProject = () => {
   let projectName = $('#input-project-name').val()
   let listHTML = $(`<a class="dropdown-project selected">${projectName}</a>`);
-  listHTML.click(e => selectProjectDropdown(e, projectName))
+  listHTML.click(e => selectProjectDropdown(e.target.id, projectName))
   $('button.dropdown-button').text(`${projectName}`);
   $('#dropdowns').attr("ref", null).append(listHTML);
 }
@@ -201,30 +207,30 @@ const setProject = () => {
 
 const selectPalette = (e, id) => {
   if (!$(e.target).hasClass('delete-button')) {
-    // let colors = $(e.target).closest('.saved-palette').find('ul').children('li').val()
     let colors = [];
     $(e.target).parents('.saved-palette').children('ul').children('li').each((index, color) => {
       colors.push($(color).attr('ref'))
     })
     let projectName = $(e.target).parents('.project-container').children('h2').text();
-    let paletteName = $(e.target).parents('.saved-palette').children('h3').text();
     let projectID = $(e.target).closest('.saved-palette').attr('id');;
+    let paletteName = $(e.target).parents('.saved-palette').children('h3').text();
     let paletteID = $(e.target).closest('.palette-container').attr('id');;
 
     generateNewPalette(colors, paletteID);
-    $('#dropdowns').attr("ref", projectID);
-    $(`a#${projectID}`).toggleClass('selected');
-    $('.dropdown-button').text(`${projectName}`);
-    $('button.dropdown-button').css('background-color', '#303F9F');
+    selectProjectDropdown(projectID, projectName);
+    // $('#dropdowns').attr("ref", projectID);
+    // $('.dropdown-button').text(`${projectName}`);
+    // $('button.dropdown-button').css('background-color', '#303F9F');
     $('#input-palette-name').val(paletteName);
-    $('.palette-save-btn').attr('disabled', false)
+    $('.palette-save-btn').attr('disabled', false);
+    // $(`a#${projectID}`).toggleClass('selected');
   }
 }
 
 const deletePalette = (e) => {
   let paletteID = e.target.id;
   fetch(`/api/v1/palettes/${paletteID}`, {
-    method: 'delete',
+    method: 'DELETE',
   })
   .then(response => response.json())
   .then(() => $(`#${paletteID}`).children().remove())
@@ -234,7 +240,7 @@ const populateProjects = (projects) => {
   projects.forEach(project => {
     let { id, name } = project;
     let listHTML = $(`<a id=${id} class="dropdown-project">${name}</a>`);
-    listHTML.click(e => selectProjectDropdown(e, name))
+    listHTML.click(e => selectProjectDropdown(e.target.id, name))
     let projectHTML = getProjectHTML(id, name);
     $('#dropdowns').append(listHTML);
     $('.saved-palette-container').append(projectHTML)
