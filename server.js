@@ -110,7 +110,8 @@ app.put('/api/v1/palettes/:id', (request, response) => {
   }
 
   database('palettes').where("id", paletteID).update(palette, 'id')
-    .then(palette => {
+    .then(() => {
+      console.log('UPDATE')
       response.status(201).json({ id: palette[0] })
     })
     .catch(error => {

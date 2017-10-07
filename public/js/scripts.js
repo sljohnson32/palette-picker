@@ -82,7 +82,6 @@ const resetControls = () => {
 }
 
 const selectProjectDropdown = (id, name) => {
-  // let id = e.target.id;
   if (id) {
     $('#dropdowns').attr("ref", id);
   } else {
@@ -108,15 +107,24 @@ const getColors = () => {
   ]
 }
 
+const checkStatus = (response) => {
+  if (response.status >= 200 && response.status < 300) {
+    return response
+  } else {
+    const error = new Error(response.statusText)
+    error.response = response
+    throw error
+  }
+};
+
 const savePalette = () => {
-  let projectID = $('#dropdowns').attr('ref');
-  let existingPaletteID = $('.color-container').attr('ref');
+  let existingPaletteID = $('#dropdowns').attr('ref');
+  let projectID = $('.color-container').attr('ref');
   let paletteBody = getPaletteBody(projectID);
 
   console.log(paletteBody)
 
   if (existingPaletteID) {
-    paletteBody.id = projectID;
     fetch(`/api/v1/palettes/${existingPaletteID}`, {
       method: 'PUT',
       headers: {
@@ -125,12 +133,11 @@ const savePalette = () => {
         },
       body: JSON.stringify(paletteBody)
     })
-    .then(response => response.json())
-    .then(data => {
-
+    .then(response => checkStatus(response))
+    .then(() => {
       let colors = getColors();
       let paletteHTML = generateSavedPalette(existingPaletteID, paletteBody.name, colors)
-      $(`#${projectID}.palette-container`).html(paletteHTML);
+      $(`#${existingPaletteID}.saved-palette`).html(paletteHTML);
       resetControls();
     })
   } else if (projectID) {
