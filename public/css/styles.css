@@ -1,5 +1,5 @@
 body {
-  font-family: "Open-Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
 }
 
 header {
@@ -10,6 +10,8 @@ header {
   font-style: italic;
   font-weight: bold;
   background-color: white;
+  font-family: 'Nosifer';
+  font-style: normal;
 }
 
 .picker-container {
@@ -136,7 +138,6 @@ hr {
   justify-content: flex-start;
   align-items: flex-start;
   margin: 20px 80px;
-  /*width: 950px;*/
 }
 
 .project-container {
@@ -154,7 +155,13 @@ hr {
   padding: 0 0 5px;
 }
 
+h3 {
+  font-weight: normal;
+  margin-top: 5px;
+}
+
 .color-box-container {
+  width: 180px;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
@@ -168,4 +175,8 @@ hr {
   flex-basis: auto;
   width: 30px;
   height: 30px;
+}
+
+.delete-button {
+  display: inline;
 }
