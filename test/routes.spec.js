@@ -191,20 +191,36 @@ describe('API Routes', () => {
         done();
       });
     });
-
-    //more tests for 422 status
-
   });
 
   describe('DELETE /api/v1/palettes/:id', () => {
-    it('should DELETE a palette and return the deleted palette id', (done) => {
+    it('should DELETE return the deleted palette id', (done) => {
       chai.request(server)
       .delete('/api/v1/palettes/4')
       .end((error, response) => {
         response.should.have.status(200);
         response.body.should.equal("Palette with id: 4 was deleted!");
-        //add integration testing to confirm number of palettes before and after
         done();
+      });
+    });
+
+    it('should DELETE the palette', (done) => {
+      chai.request(server)
+      .get('/api/v1/palettes/1')
+      .end((error, response) => {
+        response.body.length.should.equal(2);
+        chai.request(server)
+        .delete('/api/v1/palettes/2')
+        .end((error, response) => {
+          response.should.have.status(200);
+          response.body.should.equal("Palette with id: 2 was deleted!");
+          chai.request(server)
+          .get('/api/v1/palettes/1')
+          .end((error, response) => {
+            response.body.length.should.equal(1)
+            done();
+          });
+        });
       });
     });
   });
