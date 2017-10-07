@@ -107,11 +107,11 @@ describe('API Routes', () => {
       });
     });
 
-    it('should return a 500 error if the id provided is not an integer', (done) => {
+    it('should return a 400 error if the id provided is not an integer', (done) => {
       chai.request(server)
       .get('/api/v1/palettes/sam')
       .end((error, response) => {
-        response.should.have.status(500);
+        response.should.have.status(400);
         done();
       });
     });

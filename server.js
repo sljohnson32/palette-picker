@@ -28,14 +28,23 @@ app.get('/api/v1/projects', (request, response) => {
 
 app.get('/api/v1/palettes/:id', (request, response) => {
   const projectID = request.params.id
+  const isNotInteger = isNaN(parseInt(projectID))
 
+  if (isNotInteger == true ) {
+    return response.status(400).json({ error: `The request parameter for project ID must be an integer. You entered '${projectID}' which is not an integer.`})
+  }
+
+  let projectExists;
+  database('projects').where('id', projectID).select()
+    .then(project => {
+      projectExists = project;
+    })
 
   database('palettes').where('project_id', projectID).orderBy('id').select()
     .then((palettes) => {
       if (palettes.length > 0) {
         return response.status(200).json(palettes)
       } else {
-        let projectExists = database('projects').where('id', projectID).select()
         if (projectExists.length == 0) {
           response.status(404).json({ error: `There is no project with id: ${projectID} in the database.` })
         } else response.status(200).json(`There are no palettes saved for project with id: ${projectID}.`)
@@ -100,7 +109,7 @@ app.put('/api/v1/palettes/:id', (request, response) => {
     }
   }
 
-  database('palettes').where("id", "=", paletteID).update(palette, 'id')
+  database('palettes').where("id", paletteID).update(palette, 'id')
     .then(palette => {
       response.status(201).json({ id: palette[0] })
     })
