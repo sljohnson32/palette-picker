@@ -212,6 +212,8 @@ const setProject = () => {
   listHTML.click(e => selectProjectDropdown(e.target.id, projectName))
   $('button.dropdown-button').text(`${projectName}`);
   $('#dropdowns').attr("ref", null).append(listHTML);
+  $('button.dropdown-button').css('background-color', '#303F9F');
+  $('.dropdown-button').addClass('selected');
 }
 
 
