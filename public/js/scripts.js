@@ -81,20 +81,6 @@ const resetControls = () => {
   $('.dropdown-button').removeClass('selected');
 }
 
-const selectProjectDropdown = (id, name) => {
-  if (id) {
-    $('#dropdowns').attr("ref", id);
-  } else {
-    $('#dropdowns').attr("ref", null);
-  }
-  $('.dropdown-button').text(`${name}`);
-  $('.dropdown-button').addClass('selected');
-  $('#dropdowns').toggleClass('show');
-  $('button.dropdown-button').css('background-color', '#303F9F');
-  if ($('#input-palette-name').val() != '') {
-    $('.palette-save-btn').attr('disabled', false)
-  }
-}
 
 const getColors = () => {
   return [
@@ -117,9 +103,24 @@ const checkStatus = (response) => {
   }
 };
 
+const selectProjectDropdown = (id, name) => {
+  if (id) {
+    $('#dropdowns').attr("ref", id);
+  } else {
+    $('#dropdowns').attr("ref", null);
+  }
+  $('.dropdown-button').text(`${name}`);
+  $('.dropdown-button').addClass('selected');
+  $('#dropdowns').toggleClass('show');
+  $('button.dropdown-button').css('background-color', '#303F9F');
+  if ($('#input-palette-name').val() != '') {
+    $('.palette-save-btn').attr('disabled', false)
+  }
+}
+
 const savePalette = () => {
-  let existingPaletteID = $('#dropdowns').attr('ref');
-  let projectID = $('.color-container').attr('ref');
+  let projectID = $('#dropdowns').attr('ref');
+  let existingPaletteID = $('.color-container').attr('ref');
   let paletteBody = getPaletteBody(projectID);
 
   console.log(paletteBody)
@@ -141,6 +142,7 @@ const savePalette = () => {
       resetControls();
     })
   } else if (projectID) {
+      console.log('SAVING TO EXISTING PROJECT')
       fetch('/api/v1/palettes', {
         method: 'POST',
         headers: {
@@ -159,6 +161,7 @@ const savePalette = () => {
       })
 
     } else {
+      console.log('NEW PROJECT')
       let projectName = $('#input-project-name').val();
       fetch('/api/v1/projects', {
         method: 'POST',
@@ -219,9 +222,11 @@ const selectPalette = (e, id) => {
       colors.push($(color).attr('ref'))
     })
     let projectName = $(e.target).parents('.project-container').children('h2').text();
-    let projectID = $(e.target).closest('.saved-palette').attr('id');;
     let paletteName = $(e.target).parents('.saved-palette').children('h3').text();
-    let paletteID = $(e.target).closest('.palette-container').attr('id');;
+    let projectID = $(e.target).closest('.palette-container').attr('id');
+    let paletteID = $(e.target).closest('.saved-palette').attr('id');
+
+    console.log('Proj ID', projectID, ' Pal ID', paletteID)
 
     generateNewPalette(colors, paletteID);
     selectProjectDropdown(projectID, projectName);
