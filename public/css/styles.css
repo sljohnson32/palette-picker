@@ -4,11 +4,11 @@ body {
 
 header {
   padding: 5px;
+  width: 100%;
+  text-align: center;
   font-size: 28px;
   font-style: italic;
   font-weight: bold;
-  position: absolute;
-  left: 38vw;
   background-color: white;
 }
 
@@ -28,6 +28,14 @@ header {
   height: 100px;
   padding-top: 200px;
   text-align: center;
+}
+
+.color-container:first-of-type {
+  border-radius: 6px 0 0 6px;
+}
+
+.color-container:last-of-type {
+  border-radius: 0 6px 6px 0;
 }
 
 button {
