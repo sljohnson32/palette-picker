@@ -18,8 +18,9 @@ app.get('/', (request, response) => {
 app.get('/api/v1/projects', (request, response) => {
   database('projects').select().orderBy('id')
     .then((projects) => {
-      console.log(projects)
-      response.status(200).json(projects)
+      if (projects.length < 0) {
+        return response.status(200).json('There are no projects saved to the database yet');
+      } else response.status(200).json(projects)
     })
     .catch((error) => {
       response.status(500).json(error)
