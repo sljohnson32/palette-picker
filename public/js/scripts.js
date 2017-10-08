@@ -232,12 +232,8 @@ const selectPalette = (e, id) => {
 
     generateNewPalette(colors, paletteID);
     selectProjectDropdown(projectID, projectName);
-    // $('#dropdowns').attr("ref", projectID);
-    // $('.dropdown-button').text(`${projectName}`);
-    // $('button.dropdown-button').css('background-color', '#303F9F');
     $('#input-palette-name').val(paletteName);
     $('.palette-save-btn').attr('disabled', false);
-    // $(`a#${projectID}`).toggleClass('selected');
   }
 }
 

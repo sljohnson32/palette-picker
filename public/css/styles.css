@@ -1,15 +1,17 @@
 body {
-  font-family: "Open-Sans", sans-serif;
+  font-family: 'Open Sans', sans-serif;
 }
 
 header {
-  padding: 5px;
-  font-size: 28px;
+  padding: 15px 0 5px;
+  width: 100%;
+  text-align: center;
+  font-size: 34px;
   font-style: italic;
   font-weight: bold;
-  position: absolute;
-  left: 38vw;
   background-color: white;
+  font-family: 'Nosifer';
+  font-style: normal;
 }
 
 .picker-container {
@@ -24,19 +26,43 @@ header {
 .color-container {
   border: none;
   flex-basis: auto;
-  width: 140px;
+  width: 160px;
   height: 100px;
   padding-top: 200px;
   text-align: center;
 }
 
+.color-container:first-of-type {
+  border-radius: 6px 0 0 6px;
+}
+
+.color-container:last-of-type {
+  border-radius: 0 6px 6px 0;
+}
+
+p {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 18px;
+    padding: 10px;
+    font-weight: bolder;
+}
+
+
 button {
   color: white;
+  height: 34px;
   padding: 6px;
   font-size: 16px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+}
+
+.btn-gen-new-palette {
+  height: 40px;
+  margin-bottom: 15px;
+  padding: 10px;
+  background-color: #4CAF50;
 }
 
 /* Dropdown button on hover & focus */
@@ -51,19 +77,23 @@ button:disabled {
 
 .dropdown-button {
   width: 200px;
+  margin-right: 10px;
   background-color: #4CAF50;
 }
 
 .dropdown {
   position: relative;
   display: inline-block;
+  line-height: 38px;
+  vertical-align: middle;
 }
 
 .dropdown-content {
+  border-radius: 0 0 5px 5px;
   display: none;
   position: absolute;
   background-color: #FFFFFF;
-  min-width: 160px;
+  min-width: 200px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
 }
@@ -89,37 +119,42 @@ button:disabled {
 
 input {
   border-radius: 5px;
-  height: 20px;
+  height: 32px;
+  font-size: 16px;
 }
 
 .palette-controls {
+  width: 100%;
   text-align: center;
   padding: 5px;
 }
 
-.save-controls {
-  margin: 10px;
-  display: inline-block;
+.save-controls-container {
+  display: inline-flex;
+  height: 38px;
+  margin-bottom: 15px;
+  line-height: 38px;
+  vertical-align: middle;
 }
 
-.save-btn {
-  margin-bottom: 10px;
+.set-project-container {
+  height: 38px;
+  margin-bottom: 15px;
+  line-height: 38px;
+  vertical-align: middle;
 }
 
 .save-set-btns {
   background-color: #4CAF50;
 }
 
-.btn-gen-new-palette {
-  margin-bottom: 15px;
-  padding: 10px;
-  background-color: #4CAF50;
-}
 
 hr {
   margin: 0 40px;
+  border: none;
+  height: 2px;
+  background: #BDBDBD;
 }
-
 
 .saved-palette-container {
   display: flex;
@@ -128,36 +163,63 @@ hr {
   justify-content: flex-start;
   align-items: flex-start;
   margin: 20px 80px;
-  /*width: 950px;*/
 }
 
 .project-container {
   border: none;
   flex-basis: auto;
-  width: 320px;
+  width: 420px;
   height: auto;
   margin: 10px 20px;
 }
 
 .project-container h2 {
+  font-family: 'Open Sans', sans-serif;
   font-size: 20px;
   font-weight: bold;
-  border-bottom: 1px solid gray;
+  border-bottom: 1px solid #BDBDBD;
   padding: 0 0 5px;
 }
 
+.saved-palette {
+  margin: 10px;
+  height: 60px;
+  width: 400px;
+}
+
+h3 {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 18px;
+  line-height: 60px;
+  vertical-align: middle;
+  font-weight: normal;
+  text-align: right;
+  display: inline-block;
+  width: 150px;
+  margin-right: -5px;
+}
+
 .color-box-container {
-  display: flex;
+  line-height: 60px;
+  vertical-align: middle;
+  width: 180px;
+  display: inline-flex;
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: flex-start;
   align-items: center;
-  margin: 10px;
+  margin: 5px 10px;
 }
 
 .color-box {
   border: none;
-  flex-basis: auto;
-  width: 30px;
-  height: 30px;
+  width: 35px;
+  height: 35px;
+}
+
+.delete-button {
+  line-height: 60px;
+  padding-bottom: 3px;
+  vertical-align: middle;
+  display: inline-block;
 }
