@@ -115,9 +115,7 @@ const selectProjectDropdown = (id, name) => {
   $('.dropdown-button').addClass('selected');
   $('#dropdowns').toggleClass('show');
   $('button.dropdown-button').css('background-color', '#303F9F');
-  if ($('#input-palette-name').val() != '') {
-    $('.palette-save-btn').attr('disabled', false)
-  }
+  checkPaletteBtn();
 }
 
 const savePalette = () => {
@@ -212,6 +210,13 @@ const setProject = () => {
   $('#dropdowns').attr("ref", null).append(listHTML);
   $('button.dropdown-button').css('background-color', '#303F9F');
   $('.dropdown-button').addClass('selected');
+  checkPaletteBtn();
+}
+
+const checkPaletteBtn = () => {
+  if ($('input-palette-name').val() != '') {
+    $('.palette-save-btn').attr('disabled', false)
+  }
 }
 
 

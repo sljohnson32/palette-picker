@@ -184,7 +184,7 @@ hr {
 .saved-palette {
   margin: 10px;
   height: 60px;
-  width: 400px;
+  width: 410px;
 }
 
 h3 {
@@ -201,7 +201,7 @@ h3 {
 .color-box-container {
   line-height: 60px;
   vertical-align: middle;
-  width: 180px;
+  width: 200px;
   display: inline-flex;
   flex-direction: row;
   flex-wrap: nowrap;
