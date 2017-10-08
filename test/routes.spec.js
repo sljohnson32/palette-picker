@@ -227,6 +227,6 @@ describe('API Routes', () => {
 
 });
 
-// after(() => {
-//   process.exit()
-// });
+after(() => {
+  process.exit()
+});

@@ -3,7 +3,7 @@ body {
 }
 
 header {
-  padding: 15px 0 5px;
+  padding: 25px 0 10px;
   width: 100%;
   text-align: center;
   font-size: 34px;
@@ -56,12 +56,17 @@ button {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  outline: none;
 }
 
 .btn-gen-new-palette {
   height: 40px;
   margin-bottom: 15px;
   padding: 10px;
+  background-color: #4CAF50;
+}
+
+.btn-gen-new-palette:active {
   background-color: #4CAF50;
 }
 
@@ -160,7 +165,7 @@ hr {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: flex-start;
   margin: 20px 80px;
 }
@@ -184,25 +189,24 @@ hr {
 .saved-palette {
   margin: 10px;
   height: 60px;
-  width: 400px;
+  width: 410px;
 }
 
 h3 {
   font-family: 'Open Sans', sans-serif;
   font-size: 18px;
-  line-height: 60px;
   vertical-align: middle;
   font-weight: normal;
   text-align: right;
   display: inline-block;
-  width: 150px;
+  width: 158px;
   margin-right: -5px;
 }
 
 .color-box-container {
   line-height: 60px;
   vertical-align: middle;
-  width: 180px;
+  width: 200px;
   display: inline-flex;
   flex-direction: row;
   flex-wrap: nowrap;
