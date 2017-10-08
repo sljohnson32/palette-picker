@@ -40,18 +40,20 @@
     </section>
     <section class="palette-controls">
       <button class="btn-gen-new-palette" onclick="generateNewPalette()">Generate New Palette!</button><br>
-
-      <div class="dropdown-container">
-        <div class="dropdown">
-          <button onclick="showDropDown()" class="dropdown-button">Select Project &#9660;</button>
-          <div id="dropdowns" class="dropdown-content">
+      <div class="save-controls-container">
+        <div class="dropdown-container">
+          <div class="dropdown">
+            <button onclick="showDropDown()" class="dropdown-button">Select Project &#9660;</button>
+            <div id="dropdowns" class="dropdown-content">
+            </div>
           </div>
         </div>
+        <div class="save-controls">
+          <input id="input-palette-name" placeholder="Palette name..."></input>
+          <button class="save-set-btns save-btn palette-save-btn" onclick="savePalette()" disabled="true">Save Palette</button>
+        </div>
       </div>
-      <div class="save-controls">
-        <input id="input-palette-name" placeholder="Palette name..."></input>
-        <button class="save-set-btns save-btn palette-save-btn" onclick="savePalette()" disabled="true">Save Palette</button>
-        <br>
+      <div class='set-project-container'>
         <input id="input-project-name" placeholder="New project name..."></input>
         <button class="save-set-btns set-btn project-set-btn" onclick="setProject()" disabled="true">Set Project</button>
       </div>
