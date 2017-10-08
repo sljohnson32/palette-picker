@@ -1,5 +1,6 @@
 //Page load
 $(document).ready(() => {
+  setHeaderColor()
   generateNewPalette()
   fetchProjects()
   .then((data) => {
@@ -49,15 +50,16 @@ window.onclick = (event) => {
 //HTML generators
 const generateNewPalette = (colors, id) => {
   if (colors != undefined) {
-    $('.color-container').attr('ref', id)
+    $('.color-container').attr('ref', id);
     $('.color-container').each((index, element) => {
       if ($(element).find("img").hasClass('unlocked')) {
         let colorCode = colors[index]
         $(element).find('p').text(colorCode);
         $(element).attr('id', colorCode);
         $(element).css("background-color", colorCode);
-      }
-    })
+      };
+    });
+    setHeaderColor();
   } else {
     $('.color-container').each((index, element) => {
       if ($(element).find("img").hasClass('unlocked')) {
@@ -65,8 +67,9 @@ const generateNewPalette = (colors, id) => {
         $(element).find('p').text(colorCode);
         $(element).attr('id', colorCode);
         $(element).css("background-color", colorCode);
-      }
-    })
+      };
+    });
+    setHeaderColor();
   }
 }
 
@@ -136,7 +139,16 @@ const getRandomColor = () => {
     return colorCode;
 }
 
+const setHeaderColor = () => {
+  const color = getRandomColor()
+  $('h1').css('color', color)
+}
+
 //Page actions
+const showDropDown = () => {
+  document.getElementById("dropdowns").classList.toggle("show");
+}
+
 const selectProjectDropdown = (id, name) => {
   if (id) {
     $('#dropdowns').attr("ref", id);
@@ -148,10 +160,6 @@ const selectProjectDropdown = (id, name) => {
   $('#dropdowns').toggleClass('show');
   $('button.dropdown-button').css('background-color', '#303F9F');
   checkPaletteBtn();
-}
-
-const showDropDown = () => {
-    document.getElementById("dropdowns").classList.toggle("show");
 }
 
 const savePalette = () => {
