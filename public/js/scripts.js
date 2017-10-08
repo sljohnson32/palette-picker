@@ -6,7 +6,7 @@ $(document).ready(() => {
     .then((response) => {
       return response.json();
   }).then((data) => {
-    if (data.length > 0) {
+    if (typeof data == 'object') {
       populateProjects(data)
     }
   })
