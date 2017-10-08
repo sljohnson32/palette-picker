@@ -6,7 +6,9 @@ $(document).ready(() => {
     .then((response) => {
       return response.json();
   }).then((data) => {
-    populateProjects(data)
+    if (data.length > 0) {
+      populateProjects(data)
+    }
   })
 });
 
