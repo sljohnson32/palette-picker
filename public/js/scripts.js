@@ -125,8 +125,6 @@ const savePalette = () => {
   let existingPaletteID = $('.color-container').attr('ref');
   let paletteBody = getPaletteBody(projectID);
 
-  console.log(paletteBody)
-
   if (existingPaletteID) {
     fetch(`/api/v1/palettes/${existingPaletteID}`, {
       method: 'PUT',
@@ -144,7 +142,6 @@ const savePalette = () => {
       resetControls();
     })
   } else if (projectID) {
-      console.log('SAVING TO EXISTING PROJECT')
       fetch('/api/v1/palettes', {
         method: 'POST',
         headers: {
@@ -163,7 +160,6 @@ const savePalette = () => {
       })
 
     } else {
-      console.log('NEW PROJECT')
       let projectName = $('#input-project-name').val();
       fetch('/api/v1/projects', {
         method: 'POST',
@@ -229,9 +225,6 @@ const selectPalette = (e, id) => {
     let paletteName = $(e.target).parents('.saved-palette').children('h3').text();
     let projectID = $(e.target).closest('.palette-container').attr('id');
     let paletteID = $(e.target).closest('.saved-palette').attr('id');
-
-    console.log('Proj ID', projectID, ' Pal ID', paletteID)
-
     generateNewPalette(colors, paletteID);
     selectProjectDropdown(projectID, projectName);
     $('#input-palette-name').val(paletteName);
@@ -275,7 +268,6 @@ const populateProjectPalettes = (projectID) => {
     .then((response) => {
       return response.json()
     }).then((data) => {
-      if (typeof data === 'string') {return console.log(data)}
       data.forEach(palette => {
         let { id, name, color_1, color_2, color_3, color_4, color_5, color_6, project_id } = palette;
         let colors = [ color_1, color_2, color_3, color_4, color_5, color_6 ];
