@@ -83,16 +83,16 @@ const populateProjects = (projects) => {
 }
 
 const populateProjectPalettes = (projectID) => {
-  fetch(`/api/v1/palettes/${projectID}`)
-    .then((response) => {
-      return response.json()
-    }).then((data) => {
+  fetchGetPalettes(projectID)
+  .then(data => {
+    if (typeof data == 'object') {
       data.forEach(palette => {
         let { id, name, color_1, color_2, color_3, color_4, color_5, color_6, project_id } = palette;
         let colors = [ color_1, color_2, color_3, color_4, color_5, color_6 ];
-        $(`#${projectID}.palette-container`).append(generateSavedPalette(id, name, colors))
-      })
-    })
+        $(`#${projectID}.palette-container`).append(generateSavedPalette(id, name, colors));
+      });
+    } else return;
+  });
 }
 
 const generateSavedPalette = (id, name, colors) => {
@@ -160,7 +160,7 @@ const savePalette = () => {
   let paletteBody = getPaletteBody(projectID);
 
   if (existingPaletteID) {
-    fetchExistingPalettes(existingPaletteID, paletteBody)
+    fetchUpdatePalette(existingPaletteID, paletteBody)
     .then(() => {
       let colors = getColors();
       let paletteHTML = generateSavedPalette(existingPaletteID, paletteBody.name, colors)
@@ -168,7 +168,7 @@ const savePalette = () => {
       resetControls();
     })
   } else if (projectID) {
-      fetchPalettes(paletteBody)
+      fetchAddPalette(paletteBody)
       .then(data => {
         let paletteID = data.id;
         let colors = getColors();
@@ -181,7 +181,7 @@ const savePalette = () => {
       fetchCreateProject(projectName)
       .then(data => {
         let projectID = data.id
-        fetchCreateNewPalette(projectID)
+        fetchAddPalette(getPaletteBody(projectID))
         .then(data => {
           populateProjects([
             { id: projectID, name: projectName }
@@ -214,18 +214,15 @@ const selectPalette = (e, id) => {
     let projectID = $(e.target).closest('.palette-container').attr('id');
     let paletteID = $(e.target).closest('.saved-palette').attr('id');
     generateNewPalette(colors, paletteID);
-    selectProjectDropdown(projectID, projectName);
     $('#input-palette-name').val(paletteName);
     $('.palette-save-btn').attr('disabled', false);
+    selectProjectDropdown(projectID, projectName);
   }
 }
 
 const deletePalette = (e) => {
   let paletteID = e.target.id;
-  fetch(`/api/v1/palettes/${paletteID}`, {
-    method: 'DELETE',
-  })
-  .then(response => response.json())
+  fetchDeletePalette(paletteID)
   .then(() => $(`#${paletteID}`).children().remove())
 }
 
@@ -254,7 +251,7 @@ const getColors = () => {
 }
 
 const checkPaletteBtn = () => {
-  if ($('input-palette-name').val() != undefined) {
+  if ($('#input-palette-name').val() != '') {
     $('.palette-save-btn').attr('disabled', false)
   }
 }

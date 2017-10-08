@@ -4,7 +4,14 @@ const fetchProjects = () => {
   .then((response) => { return response.json() });
 }
 
-const fetchExistingPalettes = (id, body) => {
+const fetchGetPalettes = (id) => {
+  return fetch(`/api/v1/palettes/${id}`)
+    .then((response) => {
+      return response.json()
+    })
+}
+
+const fetchUpdatePalette = (id, body) => {
   return fetch(`/api/v1/palettes/${id}`, {
     method: 'PUT',
     headers: {
@@ -16,7 +23,7 @@ const fetchExistingPalettes = (id, body) => {
   .then(response => checkStatus(response))
 }
 
-const fetchPalettes = (body) => {
+const fetchAddPalette = (body) => {
   return fetch('/api/v1/palettes', {
     method: 'POST',
     headers: {
@@ -40,15 +47,9 @@ const fetchCreateProject = (name) => {
   .then(response => response.json())
 }
 
-const fetchCreateNewPalette = (id) => {
-  console.log(getPaletteBody(id))
-  return fetch('/api/v1/palettes', {
-    method: 'POST',
-    headers: {
-      'Accept': 'application/json, text/plain',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(getPaletteBody(id))
+const fetchDeletePalette = (id) => {
+  return fetch(`/api/v1/palettes/${id}`, {
+    method: 'DELETE',
   })
   .then(response => response.json())
 }
