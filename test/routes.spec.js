@@ -227,4 +227,9 @@ describe('API Routes', () => {
       });
     });
   });
+
+});
+
+after(() => {
+  process.exit()
 });
