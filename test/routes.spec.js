@@ -37,19 +37,18 @@ describe('Client Routes', () => {
 describe('API Routes', () => {
 
   before((done) => {
-    database.migrate.rollback()
-    .then(() => {
-      database.migrate.latest()
-      .then(() => {
-        done();
-      })
-    })
-  })
+    database.migrate.latest()
+    .then(() => done())
+    .catch((error) => {
+      response.status(500).json(error)
+    });
+  });
 
   beforeEach((done) => {
     database.seed.run()
-    .then(() => {
-      done()
+    .then(() => done())
+    .catch((error) => {
+      response.status(500).json(error)
     });
   });
 
@@ -228,9 +227,4 @@ describe('API Routes', () => {
       });
     });
   });
-
 });
-
-// after(() => {
-//   process.exit()
-// });
