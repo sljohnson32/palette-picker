@@ -36,16 +36,20 @@ describe('Client Routes', () => {
 
 describe('API Routes', () => {
 
-  beforeEach((done) => {
+  before((done) => {
     database.migrate.rollback()
     .then(() => {
       database.migrate.latest()
       .then(() => {
-        database.seed.run()
-        .then(() => {
-          done()
-        });
-      });
+        done();
+      })
+    })
+  })
+
+  beforeEach((done) => {
+    database.seed.run()
+    .then(() => {
+      done()
     });
   });
 
