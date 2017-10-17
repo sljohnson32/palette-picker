@@ -1,6 +1,8 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser')
+const http = require('http');
+const https = require('https');
 
 app.set('port', process.env.PORT || 3000);
 app.use(bodyParser.json())
@@ -9,6 +11,23 @@ app.use(express.static(__dirname + '/public'));
 const environment = process.env.NODE_ENV || 'development';
 const configuration = require('./knexfile')[environment];
 const database = require('knex')(configuration);
+
+//http server for redirect to https
+
+const httpApp = express();
+const httpRouter = express.Router();
+httpApp.use('*', httpRouter);
+httpRouter.get('*', (req, res) => {
+    let host = req.get('Host');
+    // replace the port in the host
+    host = host.replace(/:\d+$/, ":"+app.get('port'));
+    // determine the redirect destination
+    const destination = ['https://', host, req.url].join('');
+    return res.redirect(destination);
+});
+const httpServer = http.createServer(httpApp);
+httpServer.listen(8080);
+
 
 //Serving up the initial HTML for the single page app
 app.get('/', (request, response) => {
