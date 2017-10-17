@@ -6,7 +6,7 @@
   "background_color": "#2196F3",
   "description": "A palette generation app.",
   "icons": [{
-    "scr": "http://placebear.com/128/128",
+    "src": "http://placebear.com/128/128",
     "type": "image/png",
     "sizes": "128x128"
   }, {
