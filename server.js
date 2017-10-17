@@ -17,7 +17,7 @@ const configuration = require('./knexfile')[environment];
 const database = require('knex')(configuration);
 
 const requireHTTPS = (request, response, next) => {
-  if (request.headers['x-forwarded-proto'] != 'https') {
+  if (request.secure) {
     return response.redirect('https://' + request.get('host') + request.url);
   }
   next();
