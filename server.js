@@ -12,7 +12,9 @@ const database = require('knex')(configuration);
 
 //Serving up the initial HTML for the single page app
 app.get('/', (request, response) => {
-  console.log(request.header.X-Forwarded-Proto)
+  if (request.header.X-Forwarded-Proto == 'http') {
+    return response.redirect('https://'+request.url)
+  }
   response.sendfile('index.html');
 })
 
