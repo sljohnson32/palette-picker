@@ -5,24 +5,18 @@ const bodyParser = require('body-parser')
 app.set('port', process.env.PORT || 3000);
 app.use(bodyParser.json())
 app.use(express.static(__dirname + '/public'));
-app.enable('trust proxy');
-
-// app.use((request, response, next) => {
-//   response.header("Access-Control-Allow-Origin", "*");
-//   response.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-//   next();
-// });
 
 const environment = process.env.NODE_ENV || 'development';
 const configuration = require('./knexfile')[environment];
 const database = require('knex')(configuration);
 
 const requireHTTPS = (request, response, next) => {
-  if (request.secure) {
+  if (request.headers['x-forwarded-proto'] != 'https') {
     return response.redirect('https://' + request.get('host') + request.url);
   }
   next();
 };
+app.enable('trust proxy');
 app.use(requireHTTPS);
 
 //Serving up the initial HTML for the single page app
