@@ -16,6 +16,7 @@ const requireHTTPS = (request, response, next) => {
   }
   next();
 };
+app.enable('trust proxy');
 app.use(requireHTTPS);
 
 //Serving up the initial HTML for the single page app
