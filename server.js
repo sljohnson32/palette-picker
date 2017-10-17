@@ -5,7 +5,6 @@ const bodyParser = require('body-parser')
 app.set('port', process.env.PORT || 3000);
 app.use(bodyParser.json())
 app.use(express.static(__dirname + '/public'));
-app.enable('trust proxy');
 
 const environment = process.env.NODE_ENV || 'development';
 const configuration = require('./knexfile')[environment];
@@ -17,10 +16,11 @@ const requireHTTPS = (request, response, next) => {
   }
   next();
 };
-app.use(requireHTTPS);
+app.enable('trust proxy');
+// app.use(requireHTTPS);
 
 //Serving up the initial HTML for the single page app
-app.get('/', (request, response) => {
+app.get('/', requireHTTPS, (request, response) => {
   response.sendfile('index.html');
 })
 
