@@ -5,6 +5,12 @@ const bodyParser = require('body-parser')
 app.set('port', process.env.PORT || 3000);
 app.use(bodyParser.json())
 app.use(express.static(__dirname + '/public'));
+app.use((request, response, next) => {
+  response.header("Access-Control-Allow-Origin", "*");
+  // res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+)
 
 const environment = process.env.NODE_ENV || 'development';
 const configuration = require('./knexfile')[environment];
