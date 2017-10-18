@@ -11,16 +11,15 @@ const configuration = require('./knexfile')[environment];
 const database = require('knex')(configuration);
 
 const requireHTTPS = (request, response, next) => {
-  if (request.headers['x-forwarded-proto'] != 'https') {
-    return response.redirect('https://' + request.get('host') + request.url);
+  if(request.headers['x-forwarded-proto'] != 'https') {
+    return response.redirect('https://' + request.get('host') + request.url)
   }
   next();
 };
-app.enable('trust proxy');
 app.use(requireHTTPS);
 
 //Serving up the initial HTML for the single page app
-app.get('/', requireHTTPS, (request, response) => {
+app.get('/', (request, response) => {
   response.sendfile('index.html');
 })
 
