@@ -10,13 +10,13 @@ const environment = process.env.NODE_ENV || 'development';
 const configuration = require('./knexfile')[environment];
 const database = require('knex')(configuration);
 
-const requireHTTPS = (request, response, next) => {
-  if(request.headers['x-forwarded-proto'] != 'https') {
-    return response.redirect('https://' + request.get('host') + request.url)
-  }
-  next();
-};
-app.use(requireHTTPS);
+// const requireHTTPS = (request, response, next) => {
+//   if(request.headers['x-forwarded-proto'] != 'https') {
+//     return response.redirect('https://' + request.get('host') + request.url)
+//   }
+//   next();
+// };
+// app.use(requireHTTPS);
 
 //Serving up the initial HTML for the single page app
 app.get('/', (request, response) => {
