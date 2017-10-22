@@ -1,6 +1,8 @@
 # Palette Picker
 ### A web application that helps you generate color palettes built using vanilla JS, jQuery, Express.js with Knex and Postgres, and server-side testing using mocha, chai, and chai-http.
 
+Check out the app [here](https://samj-palette-picker.herokuapp.com/).
+
 ## Project Screen Shot
 
 ![My image](./screenshot.png)
